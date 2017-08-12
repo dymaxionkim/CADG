@@ -21,9 +21,8 @@ output: pdf_document
 
 ## 2. 엘머(Elmer) 소개
 
-|엘머의 스플래쉬 이미지|
-|:---------------------------------------:|
-|![CADG_01_Elmer_Intro_01](Pictures/CADG_01_Elmer_Intro_01.png){width=50%}|
+![CADG_01_Elmer_Intro_01](Pictures/CADG_01_Elmer_Intro_01.png){width=50%}
+엘머의 스플래쉬 이미지
 
 ### (1) 엘머 개요
 엘머는 핀란드 국립 CSC연구소에서 만들어 L/GPL 라이센스로 제공하는, 오픈소스 다중물리 시뮬레이션 소프트웨어이다.  CSC연구소는 공공 슈퍼컴퓨터 서비스를 제공하는 한국과학기술정보연구원(KISTI)과 비교할 수 있을 것 같다.

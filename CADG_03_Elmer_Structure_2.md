@@ -172,7 +172,7 @@ cp ./case.sif ./case2.sif
 
 ```c
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-! 새로운 경계조건 추가
+! New Boundary condition
 Boundary Condition 2
   Target Boundaries(1) = 6
   Name = "Force"
@@ -300,7 +300,7 @@ Solver 1
   Nonlinear System Newton After Iterations = 3
   Nonlinear System Newton After Tolerance = 1.0e-3
   Nonlinear System Relaxation Factor = 1
-  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   ! Actual Linear Solver Setting
   Linear System Solver = Iterative         ! Change from Direct to Iterative method
   Linear System Direct Method = BiCGStab   ! Change from Umfpack to BiCGStab algorithm
