@@ -14,7 +14,7 @@ output: pdf_document
 
 |필자 사진|
 |:-----------------------------:|
-|![](CADG_01.png)|
+|![](Pictures/CADG_01.png)|
 
 * 이름 : 김동호
 * 소속 : (주)대진디엠피 헬스케어사업부 개발파트장
@@ -25,7 +25,3 @@ output: pdf_document
 * 홈페이지 : http://dymaxionkim.github.io/
 * E-Mail : Dymaxion.Kim@gmail.com
 * HP : 010-2289-4826
-
-
-
-

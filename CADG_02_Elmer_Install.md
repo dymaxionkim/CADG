@@ -1,5 +1,5 @@
 ---
-title: "CADG_02_Elmer_Install : 엘머 중심의 시뮬레이션 환경을 구축해 보자!"
+title: "엘머 중심의 시뮬레이션 환경을 구축해 보자!"
 author: DymaxionKim
 date: 2017-08-05
 geometry: "left=3cm,right=2cm,top=3cm,bottom=2cm"
@@ -32,7 +32,7 @@ output: pdf_document
 
 |버츄얼박스|우분투|루분투|
 |:---------------:|:---------------:|:---------------:|
-|![](CADG_02_Elmer_Install_01.png)|![](CADG_02_Elmer_Install_02.png)|![](CADG_02_Elmer_Install_03.png)|
+|![](Pictures/CADG_02_Elmer_Install_01.png)|![](Pictures/CADG_02_Elmer_Install_02.png)|![](Pictures/CADG_02_Elmer_Install_03.png)|
 
 
 * 가상머신이든 실제 PC이든 간에, 필요한 컴퓨팅 자원은 다음과 같다.
@@ -44,7 +44,7 @@ output: pdf_document
 
 ## 3. 엘머 설치
 
-![](CADG_02_Elmer_Install_04.png)
+![](Pictures/CADG_02_Elmer_Install_04.png)
 
 ### (1) 이미 빌드된 배포판을 설치할 경우
 
@@ -109,6 +109,15 @@ $ sudo apt install liboce-modeling-dev
 $ sudo apt install qt-sdk
 ```
 
+* 엘머 소스코드 확보
+
+```bash
+mkdir ~/github
+cd ~/github
+git clone https://www.github.com/ElmerCSC/elmerfem
+mkdir elmer-build
+```
+
 * cmake-gui 실행 및 설정
 
 ```bash
@@ -139,15 +148,32 @@ $ sudo make -j2 install
 
 이렇게 하면 자동적으로 빌드가 되고 나서 시스템에 설치가 된다.
 
+* 실행파일 경로 추가
+
+우선 터미널 bash쉘 설정을 편집할 수 있도록 텍스트 편집기를 다음과 같이 실행한다.
+
+```bash
+$ nano ~/.bashrc
+```
+
+마지막 부분에 다음 구문을 추가해 준다.
+
+```
+# Elmer
+export PATH="/home/사용자홈/elmer/bin/:$PATH"
+```
+
+* 이제 터미널을 재시작한 후, `ElmerGUI` 명령을 쳐서 실행이 되는지 확인해 보자.
+
 * 이상 소개한 기본적인 빌드 절차대로 할 경우, `WITH_OCC` 옵션이 제외되었기 때문에 STEP 3D 모델링 파일을 직접 읽어들이는 능력이 없고, `WITH_VTK` 옵션이 제외되었기 때문에 ElmerGUI에 내장된 ElmerVTK 후처리기가 실행되지 않을 것이다. 이러한 옵션들까지 모두 빌드하기 위해서는 해당 소스코드를 붙여서 함께 빌드해야 한다는 점에 유의한다.
 
 
 ## 4. Gmsh 설치
 
-![](CADG_02_Elmer_Install_05.png)
+![](Pictures/CADG_02_Elmer_Install_05.png)
 
 * 홈페이지 : http://gmsh.info/
-* 해석을 효율적으로 하기 위해, 계산량을 줄이려는 목적으로 2차원 매쉬를 활용할 때가 있다.  2차원 매쉬를 효과적으로 생성하기에 적합한 대표적인 오픈소스로 Gmsh가 있으며, 이것을 설치해서 활용하도록 하자.  다음 명령으로 간단히 설치한다. (최신버전을 설치하고 싶다면 홈페이지에서 직접 다운로드 받아 압축을 풀고, 들어있는 gmsh 실행파일을 사용하면 된다.)
+* 해석을 효율적으로 하기 위해, 계산량을 줄이려는 목적으로 2차원 매쉬를 활용할 때가 있다.  2차원 매쉬를 효과적으로 생성하기에 적합한 대표적인 오픈소스로 Gmsh가 있으며, 이것을 설치해서 활용하도록 하자.  다음 명령으로 간단히 설치할 수 있다. (최신버전을 설치하고 싶다면 홈페이지에서 직접 다운로드 받아 압축을 풀고, 들어있는 gmsh 실행파일을 사용하면 된다.)
 
 ```bash
 $ sudo apt install gmsh
@@ -160,17 +186,11 @@ $ sudo apt install gmsh
 
 ## 5. Salome Platform 설치
 
-![](CADG_02_Elmer_Install_06.png)
+![](Pictures/CADG_02_Elmer_Install_06.png)
 
 * 홈페이지 : http://www.salome-platform.org/
 * 3차원 형상의 매쉬를 생성하기에 적합한 오픈소스 중에서 가장 발전된 것이다.  특히 엘머에서 다물체(Multi-Bodies) 매쉬를 생성할 때는 현재 이것 외에 대안이 없다.
-* 웹브라우저로 홈페이지의 `DOWNLOADS` 카테고리에서 압축파일을 다운로드 받는다.  외부 의존성에 구애받지 않으려면 `Universal binaries for Linux` 판본을 다운로드 받는 것이 좋겠다.  설치는 홈페이지의 설명대로 따라하면 된다.  대략 다음과 같은 식이다.
-
-```bash
-$ cd Downloads
-$ chmod +x Salome-V8_2_0-univ_public.run
-$ ./Salome-V8_2_0-univ_public.run
-```
+* 웹브라우저로 홈페이지의 `DOWNLOADS` 카테고리에서 압축파일을 다운로드 받는다.  외부 의존성에 구애받지 않으려면 `Binaries for officially supported Linux platforms` 중에 ` Linux Ubuntu 16.04 64-bits` 판본을 다운로드 받는 것이 좋겠다.  설치는 홈페이지의 설명대로 따라하면 된다.
 
 * Gmsh에서 3D 다중물체 매쉬를 만들어서 제공하기가 곤란하므로, 살로메(Salome)를 이용하여 이 부분을 해결할 수 있다.
 * 살로메에서 unv 포멧의 매쉬파일을 생성해 내고, 이것을 ElmerGrid 유틸리티를 사용하여 엘머 전용 매쉬 포멧으로 변환 후 사용하는 방식을 취한다.
@@ -180,7 +200,7 @@ $ ./Salome-V8_2_0-univ_public.run
 
 ## 6. Paraview 설치
 
-![](CADG_02_Elmer_Install_07.png)
+![](Pictures/CADG_02_Elmer_Install_07.png)
 
 * 홈페이지 : https://www.paraview.org/
 * 오픈소스 후처리기 중에서 가장 품질이 좋은 것으로 볼 수 있을 것 같다.
@@ -189,7 +209,7 @@ $ ./Salome-V8_2_0-univ_public.run
 
 ```bash
 $ cd ~
-$ wget https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.4&type=binary&os=linux64&downloadFile=ParaView-5.4.1-RC3-Qt5-OpenGL2-MPI-Linux-64bit.tar.gz
+$ wget "https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.4&type=binary&os=linux64&downloadFile=ParaView-5.4.1-RC3-Qt5-OpenGL2-MPI-Linux-64bit.tar.gz"
 $ mkdir ParaView
 $ tar -xzf ParaView-5.4.1-RC3-Qt5-OpenGL2-MPI-Linux-64bit.tar.gz -C ParaView
 ```
@@ -201,7 +221,7 @@ $ tar -xzf ParaView-5.4.1-RC3-Qt5-OpenGL2-MPI-Linux-64bit.tar.gz -C ParaView
 
 ## 7. GNU Octave 설치
 
-![](CADG_02_Elmer_Install_08.png)
+![](Pictures/CADG_02_Elmer_Install_08.png)
 
 * 홈페이지 : https://www.gnu.org/software/octave/
 * 공학도에게 친숙한 매틀랩(Matlab)은 라이센스 문제로 아무나 사용하기가 어렵다.  대신 매틀랩과 호환성이 높은 GNU Octave를 설치해서, 자료분석이나 진행과정을 자동화하는데 사용하기가 좋다.
@@ -225,12 +245,14 @@ $ octave
 * Julia Lang : Octave는 매틀랩과 호환성이 높지만, 대량의 데이타를 처리할 때는 속도가 느려서 문제가 될 수 있다.  이때 Julia Lang은 좋은 대안이 된다고 생각된다.  과학기술용 스크립트 언어 중에서 가장 처리속도가 빠른 편에 속하고, 완전한 오픈소스이며, 최신 소프트웨어 공학이 많이 적용된 젊은 언어이다.  매틀랩 문법과 완전히 호환되지는 않으나, 거의 유사하게 사용하는 것도 가능하다.  장기적인 비젼을 생각한다면 좋은 선택이 될 것이라고 본다.
 * Jupyter Notebook : 웹서비스형 대화식 개발환경(REPL)으로, Python을 기반으로 하지만 Octave, Julia Lang 및 기타 수십가지의 언어에 모두 대응한다.  노트북(Notebook) 형태로 웹브라우저상에서 아주 효율적으로 간략한 코딩, 결과 가시화, 도큐멘테이션까지 한꺼번에 쉽게 가능해진다.
 * 엘머 이외에도 Calculix, Z88 Aurora, Code_Aster, OpenFoam 등 잘 성숙한 다른 유한요소해석 소프트웨어들도 배합해서 문제를 해결해 나가면 좋을 것이다.
+* 본편에서 소개한 엔지니어링 환경 구축을 가장 신속하고 편하게 할 수 있도록, 필자가 만든 일괄작업 설치 레시피를 다음 주소에 업로드 해 놓았으므로, 그곳의 설명대로 따라해도 좋다.
+
+```
+https://github.com/dymaxionkim/Elmer_Examples_for_CADG
+```
 
 
 ## 9. 맺음말
 
 * 전통적으로 유닉스계열 오픈소스 코드들은, 소스코드 배포 후 그것을 사용자가 받아서 직접 컴파일하고 설치하는 방식이 표준적인 방법이었다.  하지만 유닉스 계열 운영체제를 능수능란하게 다루지 못하는 사람들에게는 상당히 높은 진입장벽이 된 것도 사실이다.
 * 그래서, 이미 빌드된 배포본을 온라인으로 간단한 명령만으로 편리하게 다운로드받아 자동으로 설치가 될 수 있도록 하는 체제가 발달하게 되었는데, 대표적으로 데비안 리눅스 계열의 apt 설치관리자 명령이 그것이다.  실제로 성공적인 오픈소스 공학용 소프트웨어의 대다수는 apt 설치관리자로 최신버전을 받아서 설치할 수 있도록 원격저장소를 운영해 주고 있다.  우리는 이러한 오픈소스 생태계의 혜택을 최대한 누려서, 간단한 몇 개의 명령과 약간의 설정만으로 실제 필요한 도구들을 간단하게 준비할 수 있었다.
-
-
-

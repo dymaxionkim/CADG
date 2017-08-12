@@ -1,5 +1,5 @@
 ---
-title: "CADG_01_Elmer_Intro : 엘머(Elmer), 핀란드제 오픈소스 멀티피직스 시뮬레이션 소프트웨어"
+title: "엘머와 오픈소스 엔지니어링의 소개"
 author: DymaxionKim
 date: 2017-08-05
 geometry: "left=3cm,right=2cm,top=3cm,bottom=2cm"
@@ -25,7 +25,7 @@ output: pdf_document
 
 |엘머의 스플래쉬 이미지|
 |:---------------------------------------:|
-|![CADG_01_Elmer_Intro_01](CADG_01_Elmer_Intro_01.png)|
+|![CADG_01_Elmer_Intro_01](Pictures/CADG_01_Elmer_Intro_01.png)|
 
 ### (1) 엘머 개요
 엘머는 핀란드 국립 CSC연구소에서 만들고 유지보수하고 있는, L/GPL 라이센스로 제공되는 오픈소스 다중물리 시뮬레이션 소프트웨어이다.  (CSC연구소는 공공 슈퍼컴퓨터 서비스를 제공하는 한국과학기술정보연구원(KISTI)과 비교할 수 있을 것 같다.)
@@ -45,7 +45,7 @@ output: pdf_document
 
 |조각천 코끼리 엘머|엘머의 모델 시현 상태|
 |:---:|:---:|
-|![CADG_01_Elmer_Intro_01](CADG_01_Elmer_Intro_02.png)|![CADG_01_Elmer_Intro_01](CADG_01_Elmer_Intro_03.png)|
+|![CADG_01_Elmer_Intro_01](Pictures/CADG_01_Elmer_Intro_02.png)|![CADG_01_Elmer_Intro_01](Pictures/CADG_01_Elmer_Intro_03.png)|
 
 
 CSC연구소의 엘머 팀은 현재 페터 라박(Peter Råback, http://staff.csc.fi/raback/) 박사가 안정적으로 잘 운영해 주고 있는 것 같다.
@@ -92,7 +92,7 @@ ElmerGUI를 이용해서 가장 효과를 볼 수 있는 것은, sif(Solver Inpu
 |                     |                        |GCR|Conjugate Residual method.  선형시스템의 반복적 해법.|
 |                     |                        |CGS|Conjugate Gradient Squared method.  비대칭 선형시스템의 반복적 해법.|
 |                     |                        |CG|Conjugate Gradient method.  특정 선형시스템의 반복적 해법.|
-|                     |                        |GMRES|Generalized Minimal RESidual method.  비대칭 행렬의 반복적 해법.| 
+|                     |                        |GMRES|Generalized Minimal RESidual method.  비대칭 행렬의 반복적 해법.|
 |                     |MultiGrid Method|Jacobi|Jacobi iterative method.  대각성 행렬의 병렬 해결 알고리즘.|
 |                     |                         |CG|CG의 병렬 해결.|
 |                     |                         |BiCGStab|BiCGStab의 병렬 해결.|
@@ -219,5 +219,3 @@ ElmerGUI를 이용해서 가장 효과를 볼 수 있는 것은, sif(Solver Inpu
 ### (3) 필자의 개인 연습 자료들
  - 유튜브 채널 : https://www.youtube.com/channel/UCFiY-7XHuvE6tNbF35qRcFA
  - 깃허브 엘머 예제 모음 : https://dymaxionkim.github.io/ElmerFEM_Examples/
-
-
