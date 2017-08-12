@@ -126,7 +126,7 @@ $ cmake-gui
 
 설정창이 뜨면, 경로 및 옵션 등을 적절히 선택해 준다.  일단 기본적으로, 다음의 옵션들을 체크하는 것에는 문제가 없을 것이다.
 
-```
+```c
 WITH_ELMERGUI
 WITH_MATC
 WITH_MPI
@@ -158,7 +158,7 @@ $ nano ~/.bashrc
 
 마지막 부분에 다음 구문을 추가해 준다.
 
-```
+```c
 # Elmer
 export PATH="/home/사용자홈/elmer/bin/:$PATH"
 ```
@@ -247,7 +247,7 @@ $ octave
 * 엘머 이외에도 Calculix, Z88 Aurora, Code_Aster, OpenFoam 등 잘 성숙한 다른 유한요소해석 소프트웨어들도 배합해서 문제를 해결해 나가면 좋을 것이다.
 * 본편에서 소개한 엔지니어링 환경 구축을 가장 신속하고 편하게 할 수 있도록, 필자가 만든 일괄작업 설치 레시피를 다음 주소에 업로드 해 놓았으므로, 그곳의 설명대로 따라해도 좋다.
 
-```
+```c
 https://github.com/dymaxionkim/Elmer_Examples_for_CADG
 ```
 
