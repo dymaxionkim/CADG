@@ -10,3 +10,12 @@ output: pdf_document
 ---
 
 ## 1. 개요
+
+
+## 참고자료
+
+* 비례감쇄 설명 : http://nfx.co.kr/techpaper/keyword_view.asp?pg=&sk=&bid=&nCat=&nIndex=&sHtml=&idx=229
+
+* 비례감쇄 이론 : http://www.kim2kie.com/cafeUpload/Databoard/files/320_03_01_damping_pro.pdf
+
+
