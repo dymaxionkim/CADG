@@ -4,7 +4,8 @@ author: DymaxionKim
 date: 2017-08-12
 geometry: "left=3cm,right=2cm,top=3cm,bottom=2cm"
 mainfont: Noto Sans CJK KR
-fontsize: 11pt
+monofont: D2Coding
+fontsize: 10pt
 papersize: "a4paper"
 output: pdf_document
 ---
@@ -141,7 +142,7 @@ output: pdf_document
 
 ### (10) `Run - Start solver`
 
-* 이 메뉴를 누르면 곧바로 계산이 시작된다.  메시지창과 수렴 그래프창이 뜨는데, 현재는 Direct solver로 계산하기 때문에 수렴 그래프차은 별 의미가 없다.
+* 이 메뉴를 누르면 곧바로 계산이 시작된다.  메시지창과 수렴 그래프창이 뜨는데, 현재는 Direct solver로 계산하기 때문에 수렴 그래프창은 별 의미가 없다.
 * 계산이 완료되면, 결과파일인 `case.vtu`가 생성되었음을 알 수 있다.
 
 
