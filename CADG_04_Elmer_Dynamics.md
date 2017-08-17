@@ -165,28 +165,120 @@ mpirun -np 4 ElmerSolver_mpi
 
 ### (1) 먼저 고려해 볼 사항들
 * 이번에는 감쇠를 적용해 보자.  여러가지 감쇠모델 중에서 가장 단순하게, 상수(Constant)로 감쇠계수(Damping Coefficient)를 설정해 준 후 그것을 적용해 보자.
-* 다만, 여기서 적용해 보는 상수 감쇠계수는 실제 물리적 거동과의 오차가 큰 편이기 때문에, 실제 거동과 최대한 근사하게 일치시키기 위한 목적의 실무용으로 사용하기 전에 충분한 이론적,실험적 검토를 해 볼 필요가 있다는 점을 염두에 두자.
+* 다만, 여기서 적용해 보는 상수 감쇠계수는 실제 물리적 거동과의 오차가 큰 편이기 때문에, 실제 거동과 최대한 근사하게 일치시키기 위한 목적의 실무용으로 사용하기 전에 충분한 이론-실험적 검토를 해 볼 필요가 있다는 점을 염두에 두자.
 * 감쇠계수가 매우 커지면 과감쇠가 되어 오버슈트 없이 곧바로 진동이 사그라들게 될 것이고, 감쇠계수를 줄여가면서 진동이 줄어드는 경향이 늦어지는 것을 확인할 수 있다.
+* 일반적으로 감쇠계수값은 1e7 정도 되면 충분한 과감쇠 거동을 보이는 것 같다.  부족감쇠를 주려면 이보다 낮은 수치로 튜닝해 보는 것이 좋을 것이다.
 
 ### (2) `case2.sif` 작성
+
+* 앞서 진행한 `case1.sif`에서, 아래와 같이 `Material` 카테고리에 `Damping` 변수값을 추가해 주면 된다. 그러면 재료에 감쇠 성질이 부여된다.  (ElmerGUI의 GUI상에서도 이 부분이 지원된다.)
+
+```c
+Material 1
+  Name = "Bronze"
+  Poisson ratio = 0.34
+  Youngs modulus = 1.2236595E+10
+  Density = 8800
+  ! Damping Coefficient (for Over-Damped Case)  
+  Damping = 1e7
+End
+```
+
 ### (3) 시뮬레이션 계산 실행
+* 매쉬는 이미 잘 분할되어 있으므로, 그 뒤부터 앞서 했던 것과 동일한 방법으로 병렬계산을 진행하면 된다.
+
+
 ### (4) Paraview 후처리
+* 역시 앞서 했던 것과 동일한 방법으로 후처리를 진행할 수 있다.
 
 
 ## 4. 레일리 감쇠모델을 적용한 동적응답 (CASE4)
 
 ### (1) 먼저 고려해 볼 사항들
+* 앞서 시도해 보았던 상수 감쇠계수보다 한 단계 더 나아가, 비례 감쇠계수 즉 레일리 감쇠모델(Rayleigh Damping)을 적용해 보자.
+* 레일리 감쇠모델은, 단순히 감쇠계수를 단순 상수로 놓지 않고, 질량과 강성에 대해 각각의 감쇠계수를 줘서 합한 선형적 비례관계를 가진 감쇠계수를 사용하는 것이다.  물론 이 역시 단순화된 선형 감쇠 모델이기 때문에 실제와는 거리가 있겠지만, 비교적 근사화시키기에 좋으면서 동시에 단순하기 때문에 많이 사용되는 모델이라고 한다.
+* 엘머의 `Linear elasticity` 해석자는 `Rayleigh alpha`를 질량에 대한 감쇠계수, `Rayleigh beta`를 강성에 대한 감쇠계수로 변수명을 정의해 놓았기 때문에 여기에 각각 감쇠계수를 넣어주고 사용하면 된다.
+* 물론 정확한 감쇠계수값은 알기 어렵기 때문에, 실제의 물체의 거동을 계측해서 감쇠계수를 튜닝해서 사용하는 것이 가장 좋다.
+* 일반적으로 감쇠계수값이 0.1을 넘어가면 과감쇠 거동을 보이는 것 같다.  감쇠율을 줄이려면 그보다 작은 수치를 사용하여 맞추는 것이 좋을 것으로 생각된다.
+
 ### (2) `case4.sif` 작성
+
+* 앞서 진행한 `case2.sif`에서, 아래와 같이 `Material` 카테고리에 앞서 사용한 `Damping` 변수 대신, `Rayleigh Damping` 모델을 활성화 해 주고, 여기에 필요한 2가지 감쇠계수인 `Rayleigh alpha` 및 `Rayleigh beta`를 추가해 주면 된다. 그러면 레일리 감쇠모델이 적용된다.  이때, 에러를 방지하기 위해 `Logical`, `Real` 등 변수값의 형(Type)을 명확하게 표기해 주자.  (ElmerGUI의 GUI상에서도 이 부분이 지원되며, 이때는 이상의 유의사항들이 자동으로 적용된다.)
+
+```c
+Material 1
+  Name = "Bronze"
+  Poisson ratio = 0.34
+  Youngs modulus = 1.2236595E+10
+  Density = 8800
+  ! Rayleigh Damping (Type keywords(Logical,Real) must exist)
+  Rayleigh Damping = Logical True
+  Rayleigh alpha = Real 0.3
+  Rayleigh beta = Real 0.3
+End
+```
+
 ### (3) 시뮬레이션 계산 실행
+* 매쉬는 이미 잘 분할되어 있으므로, 그 뒤부터 앞서 했던 것과 동일한 방법으로 병렬계산을 진행하면 된다.
+
 ### (4) Paraview 후처리
+* 역시 앞서 했던 것과 동일한 방법으로 후처리를 진행할 수 있다.
 
 
 ## 5. 고유모드 해석 (CASE3)
 
 ### (1) 먼저 고려해 볼 사항들
+* 고유모드 해석시에는 감쇠를 무시하기 때문에, 감쇠 관련 변수는 전부 배제한다.
+* 아울러, 고유모드 해석은 시간영역이 아니라 주파수영역을 다루기 때문에, `Transient`가 아닌 `Steady state`로 시뮬레이션이 실시되어야 한다.
+* 고유모드 계산은 대칭성 희소행렬(Symetric Sparse Matrix) 계산 분야이므로, 여기에 특화된 Direct Solver를 사용하는 것이 가장 적합하다.  예컨데 기본적으로 Umfpack, Banded 중에 하나를 적용하는 것이 좋겠다.  Iterative Solver인 BiCGStab은 고유모드 계산시에는 시간이 너무 오래 걸리기 때문에 매우 비효율적이다.
+* 엘머 배포판에서 지원하는 Direct Solver인 Umfpack,Banded는 병렬연산에 대응하지 못하기 때문에, 부득이하게 분할된 매쉬를 이용한 병렬연산을 하기는 어렵다.  병렬연산으로 고유모드해석을 고속으로 하려면 별도로 MUMPS를 엘머에 붙여서 사용하여야 한다.
+* 경계조건은, 아무런 구속을 주지 않고 물체를 완전히 공중에 붕 띄워놓고 해석을 실시하는 것도 가능하다.  다만, 본 케이스의 경우에는 중력에 의해 자중이 작용하는 조건이므로, 고리 부분의 변위를 0으로 구속시킨 것을 그대로 유지하기로 한다.
+* 만일 아래위로 압축력이 작용하여 좌굴되도록 조건을 걸어준 상태에서 고유모드 해석을 실시하게 되면, 그대로 선형좌굴해석(Linear Buckling Analysis)이 된다.  예컨데, 잠수함 압력선체(Pressure hull)를 볼 경우에는, 모든 외벽면에 압력을 걸어줘서 심해에 가라앉은 상태를 만들어주고, 이 상태에서 고유모드해석을 실시하여 압력선체가 압궤되는 형상을 예측하는 선형좌굴해석을 해 볼 수 있다.  (본 예제에서는 선형좌굴해석은 생략하도록 한다.)
+
 ### (2) `case3.sif` 작성
+
+* `Solver` 부분에서, 아래와 같이 `Eigen Analysis`를 활성화해 주고, `Eigen System Values` 변수로 몇차 모드까지 보겠는지를 기입해 주고, `Eigen System Select`로 나열순서를 정해준다.  `Smallest magnitude`로 해 줄 경우에는 작은 Magnitude 순서로 나오겠고, `Smallest real part`로 해 주면 실수부 즉 고유치가 낮은 순서대로 나열되기 때문에 우리가 일반적으로 말하는 1차,2차...모드로 부르는 것과 같이, 낮은 주파수부터 나열하여 나온다.  기타 몇가지 다른 변수들이 더 제공되는데, 여기서는 일단 생략하자.
+
+```c
+Solver 1
+  Equation = Linear elasticity
+  Procedure = "StressSolve" "StressSolver"
+  Variable = -dofs 3 Displacement
+  Calculate Stresses = True
+  ! EigenMode Analysis
+  Eigen Analysis = True
+  Eigen System Values = 10
+  Eigen System Select = Smallest magnitude
+
+  Exec Solver = Always
+  Stabilize = True
+  Bubbles = False
+  Lumped Mass Matrix = False
+  Optimize Bandwidth = True
+  Steady State Convergence Tolerance = 1.0e-5
+  Nonlinear System Convergence Tolerance = 1.0e-7
+  Nonlinear System Max Iterations = 20
+  Nonlinear System Newton After Iterations = 3
+  Nonlinear System Newton After Tolerance = 1.0e-3
+  Nonlinear System Relaxation Factor = 1
+  ! Use Direct Solver
+  Linear System Solver = Direct
+  Linear System Direct Method = Umfpack
+End
+```
+
+* 아울러, `Simulation Type`은 반드시 `Steady state`로 설정해 주는 것을 잊지 말자.
+
+
 ### (3) 시뮬레이션 계산 실행
+* 이번에는 병렬계산을 사용하지 않을 것이므로, 아래와 같이 실행 명령을 대신하자.
+
+```bash
+$ ElmerSolver case3.sif
+```
+
 ### (4) Paraview 후처리
+* 역시 앞서 했던 것과 동일한 방법으로 후처리를 진행할 수 있다.
 
 
 ## 6. 하모닉 해석 (CASE5,CASE6)

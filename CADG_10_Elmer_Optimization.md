@@ -11,3 +11,14 @@ output: pdf_document
 ---
 
 ## 1. 개요
+
+Ref.
+
+http://web.maths.unsw.edu.au/~mclean/
+http://web.maths.unsw.edu.au/~mclean/talks/simpleFEM.pdf
+
+http://juliafem.org/
+
+https://homepages.warwick.ac.uk/staff/C.Ortner/index.php?page=home
+
+https://www.featool.com/categories/FEM/
