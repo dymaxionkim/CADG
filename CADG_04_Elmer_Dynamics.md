@@ -10,17 +10,6 @@ papersize: "a4paper"
 output: pdf_document
 ---
 
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-</script>
-<script type="text/javascript"
-    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 
 ## 1. 개요
 
@@ -39,11 +28,11 @@ output: pdf_document
 * 지난시간을 통해 ElmerGUI의 사용방법을 습득하였다면, 이를 이용해서 충분히 작성할 수 있을 것이다.
 * 핵심은 아래의 설정 부분이다.  `Damping coefficient`, `Rayleigh Damping` 부분의 항목들이 전부 공란으로 비워져 있다.
 
-![](Pictures/CADG_04_Elmer_Dynamics_01.png){width=50%}
+![](Pictures/CADG_04_Elmer_Dynamics_01.png){width=20%}
 
 * 결과로 나온 `case1.sif` 파일은 아래와 같다.
 
-```c
+```bash
 Header
   CHECK KEYWORDS Warn
   Mesh DB "." "."
@@ -150,15 +139,15 @@ End
 * 계산을 실행하기 전에, 우선 병렬연산을 위해 다음 명령으로 매쉬를 분할하자.
 
 ```bash
-ElmerGrid 2 2 ./Partition -metis 4
-mv ./Partition/partitioning.4 ./partitioning.4
-rm -r Partition
+$ ElmerGrid 2 2 ./Partition -metis 4
+$ mv ./Partition/partitioning.4 ./partitioning.4
+$ rm -r Partition
 ```
 
 * 결과 파일을 담을 디렉토리도 만들자.
 
 ```bash
-mkdir CASE1
+$ mkdir CASE1
 ```
 
 * `case1.sif` 파일이 계산시 자동으로 로드 되도록 `ELMERSOLVER_STARTINFO` 파일에 다음 내용을 넣어준다.
@@ -170,7 +159,7 @@ case1.sif
 * 이제 병렬연산으로 계산을 실행하자.
 
 ```bash
-mpirun -np 4 ElmerSolver_mpi
+$ mpirun -np 4 ElmerSolver_mpi
 ```
 
 ### (4) Paraview 후처리
@@ -192,10 +181,10 @@ mpirun -np 4 ElmerSolver_mpi
 
 * 핵심은 아래의 설정 부분이다.  `Damping coefficient`에 값을 넣어주었다.
 
-![](Pictures/CADG_04_Elmer_Dynamics_02.png){width=50%}
+![](Pictures/CADG_04_Elmer_Dynamics_02.png){width=20%}
 
 
-```c
+```bash
 Material 1
   Name = "Bronze"
   Poisson ratio = 0.34
@@ -229,9 +218,9 @@ End
 
 * 핵심은 아래의 설정 부분이다.  `Rayleigh Damping` 부분의 항목들을 설정해 주었다.
 
-![](Pictures/CADG_04_Elmer_Dynamics_03.png){width=50%}
+![](Pictures/CADG_04_Elmer_Dynamics_03.png){width=20%}
 
-```c
+```bash
 Material 1
   Name = "Bronze"
   Poisson ratio = 0.34
@@ -267,9 +256,9 @@ End
 
 * 핵심은 아래의 설정 부분이다.  `Eigen system solution` 부분의 항목들을 설정해 주었다.
 
-![](Pictures/CADG_04_Elmer_Dynamics_04.png){width=50%}
+![](Pictures/CADG_04_Elmer_Dynamics_04.png){width=20%}
 
-```c
+```bash
 Solver 1
   Equation = Linear elasticity
   Procedure = "StressSolve" "StressSolver"
@@ -307,7 +296,7 @@ End
 $ ElmerSolver case3.sif
 ```
 
-* 계산이 완료되면, 터미널 메시지 중에 각 고유모드별로 구해진 고유치 데이타가 나타나게 된다.  단, 이때의 고유치는 $\omega^2$을 의미한다.  $\omega$의 단위는 [rad/sec]이므로, 이를 [Hz]단위로 변환하여 파악할 필요가 있다는 점에 유의하자.  다음의 관계식으로 단위변환을 하면 된다.
+* 계산이 완료되면, 터미널 메시지 중에 각 고유모드별로 구해진 고유치 데이타가 나타나게 된다.  단, 이때의 고유치는 \\(\omega^2\\)을 의미한다.  \\(\omega\\)의 단위는 [rad/sec]이므로, 이를 [Hz]단위로 변환하여 파악할 필요가 있다는 점에 유의하자.  다음의 관계식으로 단위변환을 하면 된다.
 
 $$
 f = \frac{\sqrt{\omega^2}}{2\pi}
@@ -328,11 +317,11 @@ $$
 ### (2) `case5.sif` 및 `case6.sif` 작성
 * 핵심은 아래의 설정 부분이다.  `Harmonic system solution` 부분의 항목들을 설정해 주었다.
 
-![](Pictures/CADG_04_Elmer_Dynamics_05.png){width=50%}
+![](Pictures/CADG_04_Elmer_Dynamics_05.png){width=20%}
 
 * 또한, `BodyForce` 부분도 아래와 같이 설정을 추가해 주어야 한다.  강제진동을 주는 상황이기 때문에 강제진동의 강도(Magnitude)를 부여해 주는 것이다.  아래에서, 강도는 x축 방향으로 1로 주었다.  또 `text input`항목에 `Stress Bodyforce 1 im = Real 0.0`으로 하나 더 추가해 주었는데, 이는 실수(Real)로 강도를 준 `Stress Bodyforce 1`의 허수(Imagine) 부분을 추가해 준 것이다.  주파수영역에서의 계산이기 때문에 허수 부분을 반드시 명시적으로 명기해 주어야 하는 상황으로 보인다.
 
-![](Pictures/CADG_04_Elmer_Dynamics_05.png){width=50%}
+![](Pictures/CADG_04_Elmer_Dynamics_05.png){width=20%}
 
 ### (3) 시뮬레이션 계산 실행
 * 아래와 같이 명령을 연속적으로 주면 된다.  리눅스 터미널(bash)에서 `&` 기호는, 해당 명령을 백그라운드에서 수행하도록 하는 의미이다.  아울러, `>`기호를 사용해서 터미널로 표시되어야 하는 출력메시지들을 로그파일로 수집되도록 해 주자.
