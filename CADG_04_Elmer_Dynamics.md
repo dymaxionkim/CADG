@@ -10,6 +10,18 @@ papersize: "a4paper"
 output: pdf_document
 ---
 
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/javascript"
+    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
 ## 1. 개요
 
 * 본편에서는, 지난 시간과 동일한 신라종(Bell) 형상 매쉬와 `Linear Elasticity` 물리방정식을 적용하여, 물체의 동적인 거동 부분을 해석해 본다.
@@ -24,7 +36,12 @@ output: pdf_document
 * 감쇠(Damping)는 여기서 무시된다.  따라서 무한하게 계속 출렁댈 것이다.
 
 ### (2) `case1.sif` 작성
-* 지난시간을 통해 ElmerGUI의 사용방법을 습득하였다면, 이를 이용해서 충분히 작성할 수 있을 것이다.  결과로 나온 `case1.sif` 파일은 아래와 같다.
+* 지난시간을 통해 ElmerGUI의 사용방법을 습득하였다면, 이를 이용해서 충분히 작성할 수 있을 것이다.
+* 핵심은 아래의 설정 부분이다.  `Damping coefficient`, `Rayleigh Damping` 부분의 항목들이 전부 공란으로 비워져 있다.
+
+![](Pictures/CADG_04_Elmer_Dynamics_01.png){width=50%}
+
+* 결과로 나온 `case1.sif` 파일은 아래와 같다.
 
 ```c
 Header
@@ -173,6 +190,11 @@ mpirun -np 4 ElmerSolver_mpi
 
 * 앞서 진행한 `case1.sif`에서, 아래와 같이 `Material` 카테고리에 `Damping` 변수값을 추가해 주면 된다. 그러면 재료에 감쇠 성질이 부여된다.  (ElmerGUI의 GUI상에서도 이 부분이 지원된다.)
 
+* 핵심은 아래의 설정 부분이다.  `Damping coefficient`에 값을 넣어주었다.
+
+![](Pictures/CADG_04_Elmer_Dynamics_02.png){width=50%}
+
+
 ```c
 Material 1
   Name = "Bronze"
@@ -204,6 +226,10 @@ End
 ### (2) `case4.sif` 작성
 
 * 앞서 진행한 `case2.sif`에서, 아래와 같이 `Material` 카테고리에 앞서 사용한 `Damping` 변수 대신, `Rayleigh Damping` 모델을 활성화 해 주고, 여기에 필요한 2가지 감쇠계수인 `Rayleigh alpha` 및 `Rayleigh beta`를 추가해 주면 된다. 그러면 레일리 감쇠모델이 적용된다.  이때, 에러를 방지하기 위해 `Logical`, `Real` 등 변수값의 형(Type)을 명확하게 표기해 주자.  (ElmerGUI의 GUI상에서도 이 부분이 지원되며, 이때는 이상의 유의사항들이 자동으로 적용된다.)
+
+* 핵심은 아래의 설정 부분이다.  `Rayleigh Damping` 부분의 항목들을 설정해 주었다.
+
+![](Pictures/CADG_04_Elmer_Dynamics_03.png){width=50%}
 
 ```c
 Material 1
@@ -238,6 +264,10 @@ End
 ### (2) `case3.sif` 작성
 
 * `Solver` 부분에서, 아래와 같이 `Eigen Analysis`를 활성화해 주고, `Eigen System Values` 변수로 몇차 모드까지 보겠는지를 기입해 주고, `Eigen System Select`로 나열순서를 정해준다.  `Smallest magnitude`로 해 줄 경우에는 작은 Magnitude 순서로 나오겠고, `Smallest real part`로 해 주면 실수부 즉 고유치가 낮은 순서대로 나열되기 때문에 우리가 일반적으로 말하는 1차,2차...모드로 부르는 것과 같이, 낮은 주파수부터 나열하여 나온다.  기타 몇가지 다른 변수들이 더 제공되는데, 여기서는 일단 생략하자.
+
+* 핵심은 아래의 설정 부분이다.  `Eigen system solution` 부분의 항목들을 설정해 주었다.
+
+![](Pictures/CADG_04_Elmer_Dynamics_04.png){width=50%}
 
 ```c
 Solver 1
@@ -277,6 +307,13 @@ End
 $ ElmerSolver case3.sif
 ```
 
+* 계산이 완료되면, 터미널 메시지 중에 각 고유모드별로 구해진 고유치 데이타가 나타나게 된다.  단, 이때의 고유치는 $\omega^2$을 의미한다.  $\omega$의 단위는 [rad/sec]이므로, 이를 [Hz]단위로 변환하여 파악할 필요가 있다는 점에 유의하자.
+
+$$
+f = \frac{\sqrt{\omega^2}}{2\pi}
+$$
+
+
 ### (4) Paraview 후처리
 * 역시 앞서 했던 것과 동일한 방법으로 후처리를 진행할 수 있다.
 
@@ -284,12 +321,35 @@ $ ElmerSolver case3.sif
 ## 6. 하모닉 해석 (CASE5,CASE6)
 
 ### (1) 먼저 고려해 볼 사항들
+* 하모닉 해석은, 특정 주파수의 강제진동을 물체에 줬을때 응답을 보는 것이다.  감쇠는 무시한다.
+* `case5.sif`는 강제진동 주파수 50Hz를, `case6.sif`은 130Hz를 줘서 비교해 보자.
+* 시뮬레이션 조건은 수렴 성공률을 높이기 위해 `BiCGStab`으로 선택하자.  대신 `case5.sif` 및 `case6.sif`를 동시에 계산을 시켜서 전체 시간을 단축시키는 전략을 택한다.
+
 ### (2) `case5.sif` 및 `case6.sif` 작성
+* 핵심은 아래의 설정 부분이다.  `Harmonic system solution` 부분의 항목들을 설정해 주었다.
+
+![](Pictures/CADG_04_Elmer_Dynamics_05.png){width=50%}
+
+* 또한, `BodyForce` 부분도 아래와 같이 설정을 추가해 주어야 한다.  강제진동을 주는 상황이기 때문에 강제진동의 강도(Magnitude)를 부여해 주는 것이다.  아래에서, 강도는 x축 방향으로 1로 주었다.  또 `text input`항목에 `Stress Bodyforce 1 im = Real 0.0`으로 하나 더 추가해 주었는데, 이는 실수(Real)로 강도를 준 `Stress Bodyforce 1`의 허수(Imagine) 부분을 추가해 준 것이다.  주파수영역에서의 계산이기 때문에 허수 부분을 반드시 명시적으로 명기해 주어야 하는 상황으로 보인다.
+
+![](Pictures/CADG_04_Elmer_Dynamics_05.png){width=50%}
+
 ### (3) 시뮬레이션 계산 실행
+* 아래와 같이 명령을 연속적으로 주면 된다.  리눅스 터미널(bash)에서 `&` 기호는, 해당 명령을 백그라운드에서 수행하도록 하는 의미이다.  아울러, `>`기호를 사용해서 터미널로 표시되어야 하는 출력메시지들을 로그파일로 수집되도록 해 주자.
+
+```bash
+$ ElmerSolver case5.sif > case5.log &
+$ ElmerSolver case6.sif > case6.log &
+```
+
 ### (4) Paraview 후처리
+* 역시 앞서 했던 것과 동일한 방법으로 후처리를 진행할 수 있다.
 
 
 ## 7. 맺음말
+* 이상 엘머에서 해 볼 수 있는 동역학 관련 해석을 몇 가지 해 보았다.  시간영역에서 무감쇠,상수감쇠,비례감쇠로 각각 거동을 살펴보았고, 아울러 주파수영역에서의 고유모드해석과 하모닉해석도 해 보았다.  이런 해석에 필요한 인풋파일(sif)의 작성 요령도 습득했다.
+* 엘머에서의 시간영역 동역학 해석은 기본적으로 내연적(Implicit) 방법에 기반하고 있고, 타임스텝별로 답을 찾아가는 외연적(Explicit) 해석은 아니기 때문에 계산효율이 그렇게 좋다는 보기 힘들지만, 올바른 파라미터를 사용해 수렴에 성공할 경우 높은 정확도를 보여줄 수 있다고 생각된다.
+
 
 ## 참고자료
 

@@ -11,3 +11,13 @@ output: pdf_document
 ---
 
 ## 1. 개요
+
+
+
+## Ref
+
+* Paraview 가시화 팁
+http://www.rccm.co.jp/icem/pukiwiki/index.php?%E5%8F%AF%E8%A6%96%E5%8C%96-Tips
+
+* Paraview 서버 셋팅
+https://www.paraview.org/Wiki/Setting_up_a_ParaView_Server
