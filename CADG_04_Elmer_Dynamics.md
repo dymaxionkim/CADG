@@ -1,7 +1,7 @@
 ---
 title: "엘머로 해 보는 동역학(Implicit Dynamics) 해석"
 author: DymaxionKim
-date: 2017-08-??
+date: 2017-08-20
 geometry: "left=3cm,right=2cm,top=3cm,bottom=2cm"
 mainfont: Noto Sans CJK KR
 monofont: D2Coding
@@ -239,6 +239,12 @@ End
 ### (4) Paraview 후처리
 * 역시 앞서 했던 것과 동일한 방법으로 후처리를 진행할 수 있다.
 
+|무감쇠|상수감쇠|레일리 비례감쇠|
+|:--------------------:|:--------------------:|:--------------------:|
+|![](Pictures/CADG_04_Elmer_Dynamics_07.png){width=20%}|![](Pictures/CADG_04_Elmer_Dynamics_08.png){width=20%}|![](Pictures/CADG_04_Elmer_Dynamics_09.png){width=20%}|
+
+* 각 케이스에 대한 애니메이션도 만들어 활용할 수 있다. : https://youtu.be/V-G1MS2YAdk
+
 
 ## 5. 고유모드 해석 (CASE3)
 
@@ -296,7 +302,7 @@ End
 $ ElmerSolver case3.sif
 ```
 
-* 계산이 완료되면, 터미널 메시지 중에 각 고유모드별로 구해진 고유치 데이타가 나타나게 된다.  단, 이때의 고유치는 \\(\omega^2\\)을 의미한다.  \\(\omega\\)의 단위는 [rad/sec]이므로, 이를 [Hz]단위로 변환하여 파악할 필요가 있다는 점에 유의하자.  다음의 관계식으로 단위변환을 하면 된다.
+* 계산이 완료되면, 터미널 메시지 중에 각 고유모드별로 구해진 고유치 데이타가 나타나게 된다.  단, 이때의 고유치는 $\omega^2$을 의미한다.  $\omega$의 단위는 [rad/sec]이므로, 이를 [Hz]단위로 변환하여 파악할 필요가 있다는 점에 유의하자.  다음의 관계식으로 단위변환을 하면 된다.
 
 $$
 f = \frac{\sqrt{\omega^2}}{2\pi}
@@ -305,6 +311,12 @@ $$
 
 ### (4) Paraview 후처리
 * 역시 앞서 했던 것과 동일한 방법으로 후처리를 진행할 수 있다.
+
+|고유모드별 변위확인|출력자료 고유치 확인|고유진동수로 단위변환|
+|:--------------------:|:--------------------:|:--------------------:|
+|![](Pictures/CADG_04_Elmer_Dynamics_10.png){width=20%}|![](Pictures/CADG_04_Elmer_Dynamics_11.png){width=20%}|![](Pictures/CADG_04_Elmer_Dynamics_12.png){width=20%}|
+
+* 각 모드별로 변형 상태를 애니메이션화 하여 활용할 수 있다. : https://youtu.be/ig7p9yG2F8w
 
 
 ## 6. 하모닉 해석 (CASE5,CASE6)
@@ -334,11 +346,15 @@ $ ElmerSolver case6.sif > case6.log &
 ### (4) Paraview 후처리
 * 역시 앞서 했던 것과 동일한 방법으로 후처리를 진행할 수 있다.
 
+|CASE5(50Hz)|CASE6(130Hz)|
+|:--------------------:|:--------------------:|
+|![](Pictures/CADG_04_Elmer_Dynamics_13.png){width=20%}|![](Pictures/CADG_04_Elmer_Dynamics_14.png){width=20%}|
+
 
 ## 7. 맺음말
 * 이상 엘머에서 해 볼 수 있는 동역학 관련 해석을 몇 가지 해 보았다.  시간영역에서 무감쇠,상수감쇠,비례감쇠로 각각 거동을 살펴보았고, 아울러 주파수영역에서의 고유모드해석과 하모닉해석도 해 보았다.  이런 해석에 필요한 인풋파일(sif)의 작성 요령도 습득했다.
 * 엘머에서의 시간영역 동역학 해석은 기본적으로 내연적(Implicit) 방법에 기반하고 있고, 타임스텝별로 답을 찾아가는 외연적(Explicit) 해석은 아니기 때문에 계산효율이 그렇게 좋다는 보기 힘들지만, 올바른 파라미터를 사용해 수렴에 성공할 경우 높은 정확도를 보여줄 수 있다고 생각된다.
-
+* 본편에서의 예제들은 다음 주소에서 데이타를 다운로드 받을 수 있다. : https://github.com/dymaxionkim/Elmer_Examples_for_CADG/tree/master/CADG_04_Elmer_Dynamics/03.Elmer
 
 ## 참고자료
 
