@@ -171,7 +171,7 @@ cp ./case.sif ./case2.sif
 
 * 그리고 적당한 텍스트 편집기로 `case2.sif` 파일을 열어서, 내용을 편집한다.  기존의 내용은 그대로 두고, 맨 아래에 다음 내용만 추가해 보자.  즉 경계조건을 하나 더 추가하는 것이다.
 
-```c
+```cpp
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! New Boundary condition
 Boundary Condition 2
@@ -186,7 +186,7 @@ End
 * 경계조건(Boundary Condition)의 지정번호는 기존의 1 다음 번호인 2로 했다.  지정 경계면은 6번 면이다.  이 번호는 ElmerGUI 상에서 미리 확인해 두면 된다(원하는 경계면을 더블클릭하면, GUI화면 하단에 메시지로 번호가 표기된다).  이름은 `Force`로 임의로 정했다.  그리고 -x 방향으로 10000[N]의 힘이 가해지도록 했다.  이때 힘의 방향을 정하기 위해서는 ElmerGUI에서 `Compass`를 보이도록 해서 참고하면 된다.
 * 그리고, 내용 맨 윗 부분의 `Simulation` 카테고리에서 다음과 같이 출력 파일 이름에 관한 내용도 수정해 준다.
 
-```c
+```cpp
 Solver Input File = case2.sif
 Post File = case2.vtu
 ```
@@ -224,7 +224,7 @@ cp ./case2.sif ./case3.sif
 
 * 그리고 적당한 텍스트 편집기로 열어서, `Simulation` 카테고리의 조건을 아래와 같이 바꿔서 대체하자.
 
-```c
+```cpp
 Simulation
   Max Output Level = 10
   Coordinate System = Cartesian
@@ -244,7 +244,7 @@ End
 
 * 그리고, `Boundary Condition 2`도 아래와 같이 변경해서 대체하자.
 
-```c
+```cpp
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! New Boundary Condition
 Boundary Condition 2
@@ -261,7 +261,7 @@ End
 
 * 또 `Transient` 시뮬레이션이기 때문에 초기조건(Initial condition)도 추가해 주자.
 
-```c
+```cpp
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ! New Initial Condition
 Initial Condition 1
@@ -283,7 +283,7 @@ rm -r Partition
 
 * 또, Umfpack은 METIS를 사용한 분할 계산에 적합하지 않기 때문에(실패한다), BiCGStab으로 솔버를 바꾸기 위해 `case3.sif`파일에서 `Solver 1` 카테고리를 아래와 같은 내용으로 대체한다.
 
-```c
+```cpp
 Solver 1
   Equation = Linear elasticity
   Calculate Stresses = True
@@ -318,7 +318,7 @@ End
 
 * 그리고 텍스트 편집기로 `ELMERSOLVER_STARTINFO`의 내용을 아래와 같이 수정해 주자(ElmerSolver_mpi 실행시 이곳의 정보를 자동으로 참조하도록 되어 있다).
 
-```c
+```cpp
 case3.sif
 ```
 
@@ -334,7 +334,7 @@ mpirun -np 4 ElmerSolver_mpi
 
 * 계산이 다 되면, 다음과 같이 4개씩 짝을 지워 10샷 즉 총 40개의 vtu파일과, 쪼개진 매쉬를 붙여주는 10개의 pvtu파일이 각 샷마다 생겨있음을 볼 수 있을 것이다.
 
-```c
+```cpp
 case30001.pvtu ... case30010.pvtu
 case30001par0001.vtu case30002par0001.vtu case30003par0001.vtu case30004par0001.vtu
 ...

@@ -79,7 +79,7 @@ output: pdf_document
 * 그 다음, 새로  `Model - Equation - Add` 해서 `Equation 2`를 만든후, 여기서 `Linear elasticity`를 체크해서 활성화시킨다.  `Harmonic Analysis = True`, `Frequency = $f`로 해 주고, 해석자는 `Umfpack`으로 해 보자.
 * 이번에는, 새로  `Model - Equation - Add` 해서 `Equation 3`를 만든후, 여기서 `Helmholtz Equation`를 체크해서 활성화시킨다.  이후 `Edit Solver Settings`를 눌러 들어가서, `Solver specific options` 탭의 `Free text input`란에 다음 내용을 써주자.
 
-```c
+```cpp
 Displacement Variable EigenMode = Integer 1
 Frequency = $f
 Nonlinear Update Exported Variables = Logical True
