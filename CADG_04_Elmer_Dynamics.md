@@ -355,7 +355,8 @@ $ ElmerSolver case6.sif > case6.log &
 ## 7. 맺음말
 * 이상 엘머에서 해 볼 수 있는 동역학 관련 해석을 몇 가지 해 보았다.  시간영역에서 무감쇠,상수감쇠,비례감쇠로 각각 거동을 살펴보았고, 아울러 주파수영역에서의 고유모드해석과 하모닉해석도 해 보았다.  이런 해석에 필요한 인풋파일(sif)의 작성 요령도 습득했다.
 * 엘머에서의 시간영역 동역학 해석은 기본적으로 내연적(Implicit) 방법에 기반하고 있고, 타임스텝별로 답을 찾아가는 외연적(Explicit) 해석은 아니기 때문에 계산효율이 그렇게 좋다는 보기 힘들지만, 올바른 파라미터를 사용해 수렴에 성공할 경우 높은 정확도를 보여줄 수 있다고 생각된다.
-* 본편에서의 예제들은 다음 주소에서 데이타를 다운로드 받을 수 있다. : https://github.com/dymaxionkim/Elmer_Examples_for_CADG/tree/master/CADG_04_Elmer_Dynamics/03.Elmer
+* 본편에서의 예제들은 다음 주소에서 데이타를 다운로드 받을 수 있다. :
+  https://github.com/dymaxionkim/Elmer_Examples_for_CADG/tree/master/CADG_04_Elmer_Dynamics/03.Elmer
 
 ## 참고자료
 

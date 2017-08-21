@@ -17,21 +17,14 @@ output: pdf_document
 * 마니막으로, 단일 샷(Shot)으로 얻어진 결과데이타로, 파라뷰(Paraview)의 애니메이션 기능을 이용하여 동영상화해 본다.
 
 
-
-![](Pictures/CADG_05_Elmer_Acoustic_03.png){width=50%}
-![](Pictures/CADG_05_Elmer_Acoustic_04.png){width=20%}
-![](Pictures/CADG_05_Elmer_Acoustic_05.png){width=20%}
-![](Pictures/CADG_05_Elmer_Acoustic_06.png){width=20%}
-![](Pictures/CADG_05_Elmer_Acoustic_07.png){width=20%}
-![](Pictures/CADG_05_Elmer_Acoustic_08.png){width=50%}
-
-
 ## 2. 다물체 다물리 음향 해석 (하모닉+헬름홀츠)
 
 ### (1) 먼저 고려해 볼 사항들
 * 하모닉 및 헬름홀츠 방정식은 주파수영역에서 해를 찾는 방식이므로, 시뮬레이션 조건은 `Transient`가 아닌 `Steady state`로 해야만 한다.
 * 헬름홀츠 방정식에는 특정한 단일 입력주파수를 넣어줘야 한다.  따라서 여러 개의 입력주파수를 계산하기 위해, 여러개의 sif 파일을 만들어놓고 배치(Batch)작업방식으로 한꺼번에 여러 케이스를 계산시킨다면, 전체 계산시간을 단축시키는 효과를 얻을 수 있을 것이다.
 * 주파수영역에서의 거동은 실수부(Real part) 및 허수부(Imagine part)로 나누어 표현되므로, 기존에 생략되어 있던 허수부가 필요한 부분을 보충해서 입력해 줄 필요가 있다.
+* 강제진동을 줄 때, `BodyForce`로 흔들어주는 방향과 세기를 줄 수 있다.
+* 
 
 ### (2) 3D CAD 모델링
 
@@ -42,8 +35,18 @@ output: pdf_document
 
 ![](Pictures/CADG_05_Elmer_Acoustic_02.png){width=50%}
 
+![](Pictures/CADG_05_Elmer_Acoustic_03.png){width=50%}
+
 
 ### (4) `case1.sif` 작성
+
+
+![](Pictures/CADG_05_Elmer_Acoustic_04.png){width=20%}
+![](Pictures/CADG_05_Elmer_Acoustic_05.png){width=20%}
+![](Pictures/CADG_05_Elmer_Acoustic_06.png){width=20%}
+![](Pictures/CADG_05_Elmer_Acoustic_07.png){width=20%}
+![](Pictures/CADG_05_Elmer_Acoustic_08.png){width=50%}
+
 ### (5) `case2.sif`, `case3.sif`, `case4.sif` 작성
 ### (6) 시뮬레이션 계산 실행
 ### (7) Paraview 후처리
