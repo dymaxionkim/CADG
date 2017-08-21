@@ -13,7 +13,7 @@ pandoc -s -S --dpi=600 -f markdown+footnotes+grid_tables+pipe_tables+table_capti
 pandoc -s -S --dpi=600 -f markdown+footnotes+grid_tables+pipe_tables+table_captions --latex-engine=xelatex --table-of-contents --highlight-style espresso -o ./pdf/CADG_03_Elmer_Structure_1.pdf CADG_03_Elmer_Structure_1.md
 pandoc -s -S --dpi=600 -f markdown+footnotes+grid_tables+pipe_tables+table_captions --latex-engine=xelatex --table-of-contents --highlight-style espresso -o ./pdf/CADG_03_Elmer_Structure_2.pdf CADG_03_Elmer_Structure_2.md
 pandoc -s -S --dpi=600 -f markdown+footnotes+grid_tables+pipe_tables+table_captions --latex-engine=xelatex --table-of-contents --highlight-style espresso -o ./pdf/CADG_04_Elmer_Dynamics.pdf CADG_04_Elmer_Dynamics.md
-#pandoc -s -S --dpi=600 -f markdown+footnotes+grid_tables+pipe_tables+table_captions --latex-engine=xelatex --table-of-contents --highlight-style espresso -o ./pdf/CADG_05_Elmer_Acoustic.pdf CADG_05_Elmer_Acoustic.md
+pandoc -s -S --dpi=600 -f markdown+footnotes+grid_tables+pipe_tables+table_captions --latex-engine=xelatex --table-of-contents --highlight-style espresso -o ./pdf/CADG_05_Elmer_Acoustic.pdf CADG_05_Elmer_Acoustic.md
 #pandoc -s -S --dpi=600 -f markdown+footnotes+grid_tables+pipe_tables+table_captions --latex-engine=xelatex --table-of-contents --highlight-style espresso -o ./pdf/CADG_06_Elmer_Conduction.pdf CADG_06_Elmer_Conduction.md
 #pandoc -s -S --dpi=600 -f markdown+footnotes+grid_tables+pipe_tables+table_captions --latex-engine=xelatex --table-of-contents --highlight-style espresso -o ./pdf/CADG_07_Elmer_Convection.pdf CADG_07_Elmer_Convection.md
 #pandoc -s -S --dpi=600 -f markdown+footnotes+grid_tables+pipe_tables+table_captions --latex-engine=xelatex --table-of-contents --highlight-style espresso -o ./pdf/CADG_08_Elmer_Radiation.pdf CADG_08_Elmer_Radiation.md
@@ -27,7 +27,7 @@ pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multili
 pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_03_Elmer_Structure_1.md -o ./docx/CADG_03_Elmer_Structure_1.docx
 pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_03_Elmer_Structure_2.md -o ./docx/CADG_03_Elmer_Structure_2.docx
 pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_04_Elmer_Dynamics.md -o ./docx/CADG_04_Elmer_Dynamics.docx
-#pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_05_Elmer_Acoustic.md -o ./docx/CADG_05_Elmer_Acoustic.docx
+pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_05_Elmer_Acoustic.md -o ./docx/CADG_05_Elmer_Acoustic.docx
 #pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_06_Elmer_Conduction.md -o ./docx/CADG_06_Elmer_Conduction.docx
 #pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_07_Elmer_Convection.md -o ./docx/CADG_07_Elmer_Convection.docx
 #pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_08_Elmer_Radiation.md -o ./docx/CADG_08_Elmer_Radiation.docx
