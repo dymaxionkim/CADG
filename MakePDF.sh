@@ -7,6 +7,7 @@
 echo "Start MakePDF..."
 
 # md 2 pdf
+echo "Finished !"
 pandoc -s -S --dpi=600 -f markdown+footnotes+grid_tables+pipe_tables+table_captions --latex-engine=xelatex --table-of-contents --highlight-style espresso -o ./pdf/CADG.pdf CADG.md
 pandoc -s -S --dpi=600 -f markdown+footnotes+grid_tables+pipe_tables+table_captions --latex-engine=xelatex --table-of-contents --highlight-style espresso -o ./pdf/CADG_01_Elmer_Intro.pdf CADG_01_Elmer_Intro.md
 pandoc -s -S --dpi=600 -f markdown+footnotes+grid_tables+pipe_tables+table_captions --latex-engine=xelatex --table-of-contents --highlight-style espresso -o ./pdf/CADG_02_Elmer_Install.pdf CADG_02_Elmer_Install.md
@@ -33,6 +34,16 @@ pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multili
 #pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_08_Elmer_Radiation.md -o ./docx/CADG_08_Elmer_Radiation.docx
 #pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_09_Elmer_MultiBody.md -o ./docx/CADG_09_Elmer_MultiBody.docx
 #spandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_10_Elmer_Optimization.md -o ./docx/CADG_10_Elmer_Optimization.docx
+
+# md 2 odt
+pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG.md -o ./odt/CADG.odt
+pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_01_Elmer_Intro.md -o ./odt/CADG_01_Elmer_Intro.odt
+pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_02_Elmer_Install.md -o ./odt/CADG_02_Elmer_Install.odt
+pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_03_Elmer_Structure_1.md -o ./odt/CADG_03_Elmer_Structure_1.odt
+pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_03_Elmer_Structure_2.md -o ./odt/CADG_03_Elmer_Structure_2.odt
+pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_04_Elmer_Dynamics.md -o ./odt/CADG_04_Elmer_Dynamics.odt
+pandoc -s --highlight-style espresso --table-of-contents --from=markdown+multiline_tables -S CADG_05_Elmer_Acoustic.md -o ./odt/CADG_05_Elmer_Acoustic.odt
+
 
 echo "Finished !"
 
