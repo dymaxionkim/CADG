@@ -18,8 +18,8 @@ J="CADG_08_Elmer_Radiation"
 K="CADG_09_Elmer_MultiBody"
 L="CADG_10_Elmer_Optimization"
 PDF="--latex-engine=xelatex -s -S --dpi=600 --table-of-contents --highlight-style tango -f markdown+multiline_tables+grid_tables+pipe_tables+table_captions"
-DOCX="-s -S --table-of-contents --highlight-style tango -f markdown+multiline_tables+grid_tables+pipe_tables+table_captions"
-ODT="-s -S --table-of-contents --highlight-style tango -f markdown+multiline_tables+grid_tables+pipe_tables+table_captions"
+DOCX="-s -S --table-of-contents --highlight-style tango -f markdown+multiline_tables+grid_tables+pipe_tables+table_captions --reference-docx=Format.docx"
+ODT="-s -S --highlight-style tango -f markdown+multiline_tables+grid_tables+pipe_tables+table_captions --reference-odt=Format.odt"
 
 echo "Start MakePDF..."
 

@@ -33,7 +33,7 @@ output: pdf_document
 
 ### (1) `Model - Setup`
 
-![](Pictures/CADG_03_Elmer_Structure_14.png){width=20%}
+![](Pictures/CADG_03_Elmer_Structure_14.png){width=20% hight=20%}
 
 * `Header` 카테고리의 항목들은 다음과 같은 의미를 가지고 있다.
 
@@ -72,17 +72,17 @@ output: pdf_document
 
 * `Add`해서 새로운 Equation을 정의해 주자.
 
-![](Pictures/CADG_03_Elmer_Structure_15.png){width=20%}
+![](Pictures/CADG_03_Elmer_Structure_15.png){width=20% hight=20%}
 
 * 30여개의 탭으로 다양한 물리방정식(Equation)이 제공된다.  본 예제에서는 위 그림과 같이, `Linear elasticity`만 `Active` 체크해서 활성화 시킨다.  아울러 옵션으로 스트레스 계산도 활성화해 준다.
 * `Apply to bodies:` 항목에는 현재 모델에서 구분된 물체(Body)가 표시된다.  본 예제에서는 1개의 물체만 있기 때문에 혼동될 염려가 없으므로 직접 체크해 준다.
 * `Edit Solver Settings`에서는 물리방정식을 푸는 해석자에 관한 옵션들이 들어있다.  눌러서 들어가 보자.
 
-![](Pictures/CADG_03_Elmer_Structure_16.png){width=20%}
+![](Pictures/CADG_03_Elmer_Structure_16.png){width=20% hight=20%}
 
 * 첫번째 탭인 `Solver specific options`에서 위 그림과 같이 필요한 기능만 체크해 준다.  본 예제에서는 `Calculate loads`를 체크해서 외력을 관한 정보를 결과에 포함시키고, `Calculate stresses`로 응력도 결과에 포함시키는 것으로 한다.  그리고 `Displacement mesh`로 변형까지 결과에 포함시키자.
 
-![](Pictures/CADG_03_Elmer_Structure_17.png){width=20%}
+![](Pictures/CADG_03_Elmer_Structure_17.png){width=20% hight=20%}
 
 * 그리고 `Linear system` 탭에서 `Method`를 Umfpack Direct Solver로 선택해 주었다.  이것으로 계산이 잘 된다면 디폴트였던 BiCGStab Iterative Solver보다 훨씬 빠르게 계산을 마칠 수 있을 것이다.
 
@@ -91,8 +91,8 @@ output: pdf_document
 
 * `Add`해서 새로운 Material을 정의해 주자.
 
-![](Pictures/CADG_03_Elmer_Structure_18.png){width=20%}
-![](Pictures/CADG_03_Elmer_Structure_19.png){width=20%}
+![](Pictures/CADG_03_Elmer_Structure_18.png){width=20% hight=20%}
+![](Pictures/CADG_03_Elmer_Structure_19.png){width=20% hight=20%}
 
 * `Material library`에 들어있는 기본적인 것을 선택해도 되지만, 여기서는 청동(Bronze) 소재의 물성을 사용해보고 싶다.  위 그림과 같이 그에 해당하는 구조해석을 위한 물성치를 넣어준다.
 * 정의된 재료의 물성치를 적용할 물체(Body)도 체크해 준다.
@@ -102,7 +102,7 @@ output: pdf_document
 
 * 여기서는, 물체(Body)에 적용되는 힘을 넣어준다.
 
-![](Pictures/CADG_03_Elmer_Structure_20.png){width=20%}
+![](Pictures/CADG_03_Elmer_Structure_20.png){width=20% hight=20%}
 
 * 본 예제의 해석 목표는 자중에 의한 응력을 알아보는 것이므로, 중력가속도(Gravity)와 밀도(Density)를 곱해준다.  물론 -z축 방향이므로, z축에 해당하는 `Force 3`란에 기입하고 마이너스(-)부호를 넣는다.  아울러, 곱셈 수식을 엘머가 인식해서 적용할 수 있도록 `$`기호도 앞에 넣어주는 것을 잊지 않는다.
 * 정의된 Body Force가 적용할 물체(Body)도 체크해 준다.
@@ -117,7 +117,7 @@ output: pdf_document
 
 * 경계조건은, 모델의 고리 부분을 고정했다고 가정하고 그 부위의 변위를 0으로 만들어주기 위해 하나 설정해 준다.
 
-![](Pictures/CADG_03_Elmer_Structure_21.png){width=20%}
+![](Pictures/CADG_03_Elmer_Structure_21.png){width=20% hight=20%}
 
 * x,y,z 모두 변위를 0으로 해서 고정하였다.
 * `Apply to boundaries:` 부분은 체크하지 않고 일단 보류한다.  이유는 물체(Body)의 경우와는 달리, 경계면이 여러가지 많이 있기 때문에 어느 번호가 고정하기를 원하는 경계면인지 알 수 없기 때문이다.
@@ -133,7 +133,7 @@ output: pdf_document
 * 경계면(Boundary)를 선택하기 위해 이 메뉴를 눌러서 체크해 준다.
 * 이후 그래픽 화면에서, 아래의 그림에서 붉은 부분의 경계면을 더블클릭해서 선택해 준다.
 
-![](Pictures/CADG_03_Elmer_Structure_22.png){width=50%}
+![](Pictures/CADG_03_Elmer_Structure_22.png){width=50% hight=50%}
 
 * 팝업창이 뜨면, 조금 전에 설정해 둔 경계조건을 선택해서 Apply해 주면 적용이 된다.
 * 이제 `Model` 메뉴에서 필요한 설정은 모두 끝났다.
@@ -157,7 +157,7 @@ output: pdf_document
 * 이제 Paraview 프로그램을 실행하고, `case.vtu` 파일을 불러들여 본다.
 * 좌측 `Properties` 탭의 `Apply` 버튼을 누르면 형상이 화면에 나타난다.
 
-![](Pictures/CADG_03_Elmer_Structure_23.png){width=50%}
+![](Pictures/CADG_03_Elmer_Structure_23.png){width=50% hight=50%}
 
 * 그리고 위 그림에 표시된 부분에서 `vonmises`등을 선택해서 확인해 본다.
 * Von Mises 응력의 경우, 최고값(Max)이 `7.7e+06`으로 나온다.  현재 MKS단위계로 맞추어져 있으므로, 단위는 당연히 [kgf/m^2]일 것이다.  일반적으로 사용하는 단위로 환산하면, 75.511205[MPa]이 된다.
@@ -207,15 +207,15 @@ $ ElmerSolver case2.sif
 * 계산 도중 시스템의 자원 상황을 확인해 보려면, 새로운 터미널을 열어서 `top` 또는 `htop` 같은 명령을 사용해 보자.  CPU나 메모리 점유율, 프로세스의 현재 상황 등을 볼 수 있다.  (현재 Umfpack을 사용하고 있는데, 1개의 CPU 코어만 100%에 도달하는 것을 볼 수 있다.  즉 멀티코어 CPU에는 C로 짜여진 Umfpack은 대응하지 못한다.)
 * 계산이 완료되면, `case20001.vtu` 파일이 생성된 것을 확인할 수 있다.  Paraview로 이 파일을 읽어들여보고, 가시화 해 보자.
 
-![](Pictures/CADG_03_Elmer_Structure_24.png){width=50%}
+![](Pictures/CADG_03_Elmer_Structure_24.png){width=50% hight=50%}
 
 * 위 그림과 같이 범위(Range)를 수동으로 조절해서 가시화되는 등고선을 더 뚜렷하게 만들어 볼 수 있다.
 
-![](Pictures/CADG_03_Elmer_Structure_25.png){width=50%}
+![](Pictures/CADG_03_Elmer_Structure_25.png){width=50% hight=50%}
 
 * 위 그림에서는 1번 버튼을 눌러서 WrapByVector를 추가하고, Scale Factor를 500배로 키워서, 응력에 의한 변형을 과장해서 보여주도록 하였다.
 
-![](Pictures/CADG_03_Elmer_Structure_26.png){width=50%}
+![](Pictures/CADG_03_Elmer_Structure_26.png){width=50% hight=50%}
 
 * 위 그림에서는 1번 메뉴 `View - Animation View`를 체크해서, 2번의 팝업이 나타나도록 한 후, WrapByVector1을 추가(+)한 후 시간에 따라 Scale Factor가 변하도록 해서 애니메이션을 만든 것이다.  메뉴 상단의 플레이 버튼을 누르면 애니메이션을 볼 수 있고, `File - Save Animation`으로 동영상 파일로 저장할 수 있다.
 
@@ -336,7 +336,7 @@ $ mpirun -np 4 ElmerSolver_mpi
 
 * 실행 도중 다른 터미널로 `top` 또는 `htop`해서 CPU의 사용률을 보면, 4개의 CPU 코어가 100%에 달해서 총력을 기울이고 있음을 볼 수 있다.  이러한 분할 연산 전략은, 해석자(Solver)가 오래된 포트란 코드나 C코드로 개발되어 최신 멀티코어 연산에 대응하지 못할 경우, MPI를 이용하여 쪼개서 각각 계산을 시킴으로써 전체적으로 병렬연산을 하는 효과를 볼 수 있게 한다.  또한 리눅스OS는 현명하게도, 가용한 모든 4개의 CPU코어를 계산에 동원했음에도 불구하고, 이외의 다른 작업을 할때는 적절하게 자원을 배분해 주어 데스크탑 전체가 얼어붙거나 하는 일을 미연에 방지해 준다.
 
-![](Pictures/CADG_03_Elmer_Structure_27.png){width=20%}
+![](Pictures/CADG_03_Elmer_Structure_27.png){width=20% hight=20%}
 
 * 계산이 다 되면, 다음과 같이 4개씩 짝을 지워 10샷 즉 총 40개의 vtu파일과, 쪼개진 매쉬를 붙여주는 10개의 pvtu파일이 각 샷마다 생겨있음을 볼 수 있을 것이다.
 
