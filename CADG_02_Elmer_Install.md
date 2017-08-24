@@ -7,6 +7,12 @@ mainfont: Noto Sans CJK KR
 monofont: D2Coding
 fontsize: 10pt
 papersize: "a4paper"
+header-includes:
+ - \usepackage{fancyhdr}
+ - \pagestyle{fancy}
+ - \fancyhead[CO,CE]{엘머로 해 보는 오픈소스 엔지니어링}
+ - \fancyfoot[CO,CE]{CAD\&Graphics}
+ - \fancyfoot[LE,RO]{\thepage}
 output: pdf_document
 ---
 
@@ -83,7 +89,7 @@ $ nano ~/.bashrc
 
 * 이후 편집기에서 끝부분에 다음 구문을 추가해 주고, 저장하고 빠져나온다.
 
-```bash
+```cpp
 ELMERGUI_HOME=/usr/share/ElmerGUI
 ELMERSOLVER_HOME=/usr/share/elmersolver
 ELMERLIB=/usr/lib/elmersolver
@@ -104,7 +110,8 @@ $ ElmerGUI
 ```bash
 $ sudo apt install automake gcc g++ gfortran cmake cmake-qt-gui
 $ sudo apt install libopenmpi-dev mpi-default-dev mpi-default-bin libscotchmetis-dev
-$ sudo apt install libreadline-dev libncurses5-dev libx11-dev tk-dev tcl-dev libfreetype6-dev libftgl-dev libgl1-mesa-dev libglu1-mesa-dev
+$ sudo apt install libreadline-dev libncurses5-dev libx11-dev tk-dev tcl-dev \
+libfreetype6-dev libftgl-dev libgl1-mesa-dev libglu1-mesa-dev
 $ sudo apt install libblas-dev liblapack-dev libhypre-dev libsuitesparse-dev libarpack2-dev r-base-core
 $ sudo apt install liboce-modeling-dev
 $ sudo apt install qt-sdk
@@ -113,10 +120,10 @@ $ sudo apt install qt-sdk
 * 엘머 소스코드 확보
 
 ```bash
-mkdir ~/github
-cd ~/github
-git clone https://www.github.com/ElmerCSC/elmerfem
-mkdir elmer-build
+$ mkdir ~/github
+$ cd ~/github
+$ git clone https://www.github.com/ElmerCSC/elmerfem
+$ mkdir elmer-build
 ```
 
 * cmake-gui 실행 및 설정
@@ -210,7 +217,9 @@ $ sudo apt install gmsh
 
 ```bash
 $ cd ~
-$ wget "https://www.paraview.org/paraview-downloads/download.php?submit=Download&version=v5.4&type=binary&os=linux64&downloadFile=ParaView-5.4.1-RC3-Qt5-OpenGL2-MPI-Linux-64bit.tar.gz"
+$ wget \ "https://www.paraview.org/paraview-downloads/ \
+download.php?submit=Download&version=v5.4&type=binary&os=linux64& \
+downloadFile=ParaView-5.4.1-RC3-Qt5-OpenGL2-MPI-Linux-64bit.tar.gz"
 $ mkdir ParaView
 $ tar -xzf ParaView-5.4.1-RC3-Qt5-OpenGL2-MPI-Linux-64bit.tar.gz -C ParaView
 ```
@@ -248,9 +257,7 @@ $ octave
 * 엘머 이외에도 Calculix, Z88 Aurora, Code_Aster, OpenFoam 등 잘 성숙한 다른 유한요소해석 소프트웨어들도 배합해서 문제를 해결해 나가면 좋을 것이다.
 * 본편에서 소개한 엔지니어링 환경 구축을 가장 신속하고 편하게 할 수 있도록, 필자가 만든 일괄작업 설치 레시피를 다음 주소에 업로드 해 놓았으므로, 그곳의 설명대로 따라해도 좋다.
 
-```cpp
-https://github.com/dymaxionkim/Elmer_Examples_for_CADG
-```
+> https://github.com/dymaxionkim/Elmer_Examples_for_CADG
 
 
 ## 9. 맺음말

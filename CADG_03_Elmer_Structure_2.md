@@ -7,6 +7,12 @@ mainfont: Noto Sans CJK KR
 monofont: D2Coding
 fontsize: 10pt
 papersize: "a4paper"
+header-includes:
+ - \usepackage{fancyhdr}
+ - \pagestyle{fancy}
+ - \fancyhead[CO,CE]{엘머로 해 보는 오픈소스 엔지니어링}
+ - \fancyfoot[CO,CE]{CAD\&Graphics}
+ - \fancyfoot[LE,RO]{\thepage}
 output: pdf_document
 ---
 
@@ -22,7 +28,7 @@ output: pdf_document
 
 ## 2. 자중에 의한 변형과 스트레스 해석
 
-* 다시 엘머를 시작하고, `File -Load project`를 하고 직전에 작업하던 디렉토리로 가서 `Open`하면 원래 작업하던 상태 그대로 로딩되는 것을 확인할 수 있다.
+* 다시 엘머를 시작하고, `File - Load project`를 하고 직전에 작업하던 디렉토리로 가서 `Open`하면 원래 작업하던 상태 그대로 로딩되는 것을 확인할 수 있다.
 * 이제 시뮬레이션 인풋 조건들을 지정해 줘 보자.
 
 ### (1) `Model - Setup`
@@ -166,7 +172,7 @@ output: pdf_document
 * 터미널에서, 앞선 예제에서 작업하던 프로젝트 디렉토리로 간다.  이후 다음과 같이 명령해 보자.
 
 ```bash
-cp ./case.sif ./case2.sif
+$ cp ./case.sif ./case2.sif
 ```
 
 * 그리고 적당한 텍스트 편집기로 `case2.sif` 파일을 열어서, 내용을 편집한다.  기존의 내용은 그대로 두고, 맨 아래에 다음 내용만 추가해 보자.  즉 경계조건을 하나 더 추가하는 것이다.
@@ -195,7 +201,7 @@ Post File = case2.vtu
 * 이제 계산을 아래와 같이 실행하고 완료될 때 까지 메시지를 보면서 기다려 보자.  ElmerGUI 없이 터미널에서 바로 계산을 시키니까 불필요한 메모리 낭비도 없어서 좋다.
 
 ```bash
-ElmerSolver case2.sif
+$ ElmerSolver case2.sif
 ```
 
 * 계산 도중 시스템의 자원 상황을 확인해 보려면, 새로운 터미널을 열어서 `top` 또는 `htop` 같은 명령을 사용해 보자.  CPU나 메모리 점유율, 프로세스의 현재 상황 등을 볼 수 있다.  (현재 Umfpack을 사용하고 있는데, 1개의 CPU 코어만 100%에 도달하는 것을 볼 수 있다.  즉 멀티코어 CPU에는 C로 짜여진 Umfpack은 대응하지 못한다.)
@@ -219,7 +225,7 @@ ElmerSolver case2.sif
 * 이번에는 `Force 1 = -10000`로 그냥 상수로 주었던 것을, 임의의 함수로 시간별로 변화시켜 보고, 그것을 `Transient` 시뮬레이션 조건으로 시간에 따른 변화를 보도록 해 보자.  우선 아래와 같이 새로운 sif 파일을 또 만들자.
 
 ```bash
-cp ./case2.sif ./case3.sif
+$ cp ./case2.sif ./case3.sif
 ```
 
 * 그리고 적당한 텍스트 편집기로 열어서, `Simulation` 카테고리의 조건을 아래와 같이 바꿔서 대체하자.
@@ -276,9 +282,9 @@ End
 * 방법은 매쉬를 연산시킬 CPU 코어 개수만큼 쪼개는 것이다.  매쉬를 쪼개는 작업은 ElmerGrid에서 METIS 라이브러리를 활용해서 해 준다.  4개의 가용한 CPU 코어가 있다면, 다음 명령과 같이 4개로 쪼개고 디렉토리 경로를 맞추어준다.
 
 ```bash
-ElmerGrid 2 2 ./Partition -metis 4
-mv ./Partition/partitioning.4 ./partitioning.4
-rm -r Partition
+$ ElmerGrid 2 2 ./Partition -metis 4
+$ mv ./Partition/partitioning.4 ./partitioning.4
+$ rm -r Partition
 ```
 
 * 또, Umfpack은 METIS를 사용한 분할 계산에 적합하지 않기 때문에(실패한다), BiCGStab으로 솔버를 바꾸기 위해 `case3.sif`파일에서 `Solver 1` 카테고리를 아래와 같은 내용으로 대체한다.
@@ -325,7 +331,7 @@ case3.sif
 * 이제 여러개로 쪼개진 매쉬들의 접합부 노드간에 메시지를 주고받으면서 연성(Connection) 될 수 있도록 MPI 연산을 시킨다.  아래와 같이 `mpirun` 명령으로 4개의 CPU코어를 사용하도록 옵션을 줘서 실행시키면 된다.  계산량이 상당하므로 몇 시간 정도 소요될 것이다.
 
 ```bash
-mpirun -np 4 ElmerSolver_mpi
+$ mpirun -np 4 ElmerSolver_mpi
 ```
 
 * 실행 도중 다른 터미널로 `top` 또는 `htop`해서 CPU의 사용률을 보면, 4개의 CPU 코어가 100%에 달해서 총력을 기울이고 있음을 볼 수 있다.  이러한 분할 연산 전략은, 해석자(Solver)가 오래된 포트란 코드나 C코드로 개발되어 최신 멀티코어 연산에 대응하지 못할 경우, MPI를 이용하여 쪼개서 각각 계산을 시킴으로써 전체적으로 병렬연산을 하는 효과를 볼 수 있게 한다.  또한 리눅스OS는 현명하게도, 가용한 모든 4개의 CPU코어를 계산에 동원했음에도 불구하고, 이외의 다른 작업을 할때는 적절하게 자원을 배분해 주어 데스크탑 전체가 얼어붙거나 하는 일을 미연에 방지해 준다.
@@ -355,19 +361,27 @@ case30001par0010.vtu case30002par0010.vtu case30003par0010.vtu case30004par0010.
 ## 6. 참고 자료
 
 * 성덕대왕신종의 부분명칭과 크기
-  http://blog.daum.net/_blog/BlogTypeView.do?blogid=03Pdg&articleno=15960218
+
+> http://blog.daum.net/_blog/BlogTypeView.do?blogid=03Pdg&articleno=15960218
 
 * 이장무, 新羅 鐘의 設計에 관한 연구, 학술원논문집 제55집 1호 (2016)
-  http://www.nas.go.kr
+
+> http://www.nas.go.kr
 
 * 김석현,이중혁, 등가 종 모델을 이용한 맥놀이 주기 조절법, 한국음향학회지 제31권 제8호 (2012)
-  http://ocean.kisti.re.kr/downfile/volume/ask/GOHHBH/2012/v31n8/GOHHBH_2012_v31n8_561.pdf
+
+> http://ocean.kisti.re.kr/downfile/volume/ask/GOHHBH/2012/v31n8/GOHHBH_2012_v31n8_561.pdf
 
 * J.M.LEE, A STUDY ON THE VIBRATION CHARACTERISTICS OF A LARGE SIZE KOREAN BELL, Journal of Sound and Vibration (2002)
-  http://doi.org.ololo.sci-hub.bz/10.1006/jsvi.2002.5092
+
+> http://doi.org.ololo.sci-hub.bz/10.1006/jsvi.2002.5092
 
 * 성덕대왕신종 고리쇠 관련 에피소드
-  http://www.jikjimuseum.org/wind/content.asp?pWID=04&pID=413&pPageID=0007v~&pPageCnt=8&pBlockID=1&pBlockCnt=1&pDir=S&pSearch=&pSearchStr=
+
+> http://www.jikjimuseum.org/wind/content.asp? \
+> pWID=04&pID=413&pPageID=0007v~&pPageCnt=8& \
+> pBlockID=1&pBlockCnt=1&pDir=S&pSearch=&pSearchStr=
 
 * 반론
-  http://scieng.net/tech/16616
+
+> http://scieng.net/tech/16616
