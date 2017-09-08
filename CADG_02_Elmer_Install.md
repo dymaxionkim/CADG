@@ -120,10 +120,10 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ELMERLIB:$ELMERSOLVER_HOME/lib
 /usr/bin/ElmerGUI
 ```
 
-* 그 다음, 만들어진 쉘스크립트에 실행 속성을 준다.
+* 그 다음, 만들어진 쉘스크립트를 아무나 실행할 수 있도록 속성을 준다.
 
 ```bash
-$ chmod +x ./Start_Elmer.sh
+$ sudo chmod o+x /usr/bin/Start_Elmer.sh
 ```
 
 * 이제, 데스크탑 실행용 아이콘 그림파일을 받아서 적절한 장소에 배치한다.
