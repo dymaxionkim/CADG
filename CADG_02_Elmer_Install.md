@@ -319,6 +319,10 @@ $ octave
 > https://github.com/dymaxionkim/Elmer_Examples_for_CADG
 
 * 위 주소에서 권장하는 것은, osboxes 가상머신에 쉘스크립트로 자동환경설정이 되도록 하는 방식인데, 앞서 설명한 엘머 및 기타 필요한 유틸리티들의 설치와 필요한 시스템 환경이 자동으로 잡히도록 셋팅해 놓았고, 설명서도 기재해 두었다.
+* 설치된 가상머신 리눅스 데스크탑은 다음과 같은 상태로 사용할 수 있게 된다.
+
+![](Pictures/CADG_02_Elmer_Install_09.png)
+
 
 
 ## 9. 맺음말
