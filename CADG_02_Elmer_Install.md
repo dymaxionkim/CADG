@@ -130,7 +130,8 @@ $ sudo chmod o+x /usr/bin/Start_Elmer.sh
 
 ```bash
 $ sudo mkdir /usr/share/ElmerGUI/icons
-$ sudo wget -O /usr/share/ElmerGUI/icons/Mesh3D.png https://raw.githubusercontent.com/tehnick/elmerfem/master/ElmerGUI/Application/icons/Mesh3D.png
+$ sudo wget -O /usr/share/ElmerGUI/icons/Mesh3D.png \
+https://raw.githubusercontent.com/tehnick/elmerfem/master/ElmerGUI/Application/icons/Mesh3D.png
 ```
 
 * 이제 데스크탑 등록 파일(.desktop)을 만든다.
@@ -245,7 +246,7 @@ $ sudo apt install gmsh
 
 * Gmsh도 물론 3D STEP 파일을 직접 읽어들일 수는 있으나, 자잘한 오류나 기능부족 때문에 권장할 만 하지는 않다.  또한 STEP 파일로부터 다중물체(Multi-Bodies)를 인식하거나 저장(Export)하는 기능이 아직 구현되어 있지 않다. 따라서, 일반적으로 geo 파일을 편집하고 전용 매쉬 포멧인 msh 파일을 생성해 주는 용도로 주로 사용한다.  3D의 경우에는 다중물체를 생성했을 때 엘머에서 인식되도록 하기가 어렵기 때문에(제대로 구현되어 있지 않음), 보통은 2D로 간소화한 모델을 만들어내어 사용할 때 이용한다.
 
-* gmsh의 매쉬 포멧인 `.msh` 파일은 많은 매쉬 관련 소프트되어들이 기본적으로 지원해 주기 때문에, 다양한 유한요소해석 소프트웨어간의 데이타 변환시에도 중간(Neutral) 포멧으로 사용하기에도 유용하다.
+* Gmsh의 매쉬 포멧인 `.msh` 파일은 많은 매쉬 관련 소프트되어들이 기본적으로 지원해 주기 때문에, 다양한 유한요소해석 소프트웨어간의 데이타 변환시에도 중간(Neutral) 포멧으로 사용하기에도 유용하다.
 * 본 강좌에서는 Gmsh의 구체적인 사용방법을 별도로 설명하지는 않는다.  다만 인터넷상에 매우 많은 정보와 튜토리얼들이 있기 때문에 쉽고 빠르게 사용법을 익히는데 전혀 문제가 없을 것이다.
 
 
