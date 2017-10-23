@@ -122,7 +122,7 @@ output: pdf_document
 * 3번의 `Fineness`는, 정해준 엘리먼트 사이즈 범위 내에서 엘리먼트의 사이즈가 점차 성장해 가는 비율을 결정하는 것이다.  일단은 기본 상태로 두었다.
 * 설정이 완료되면 `OK`를 눌러 빠져나온다.  그리고 `Create Mesh` 팝업창도 `Apply and Close`를 눌러 빠져나온다.
 
-![9](Pictures/CADG_03_Elmer_Structure_08.png){width=20%}
+![9](Pictures/CADG_03_Elmer_Structure_09.png){width=20%}
 
 * 그러면 트리 영역에 `Mesh`피쳐가 생성되어 있음을 볼 수 있다.  이 안의 `Hypotheses` 및 `Algorithms`에 금방 설정한 사항들이 피쳐(Feature)로서 들어있음도 확인할 수 있다.  수정하고 싶으면 해당 피쳐의 컨텍스트메뉴(마우스 오른쪽 버튼을 누르면 나오는 메뉴)에서 `Edit Hypothesis`를 선택하고 수정하면 된다.
 * 그리고 `Mesh_1` 피쳐 안에는, 그 위에서 설정된 `Hypotheses` 및 `Algorithms`를 상속받아 `Mesh_1`에 적용되었음이 보인다.
