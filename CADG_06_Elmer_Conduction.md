@@ -34,7 +34,7 @@ output: pdf_document
 |항목             |사양                |비고                                   |
 |----------------|-------------------|--------------------------------------|
 |LED 발광체(SOURCE)|0.95x0.95x0.015mm  |발열원                                 |
-|LED 슬러그(SLUG)  |5x5x?mm            |발열원과 기판 사이의 열 전달체의 단순화 모델   |
+|LED 슬러그(SLUG)  |5x5x1.2mm            |발열원과 기판 사이의 열 전달체의 단순화 모델   |
 |기판(PCB)        |FR4 또는 메탈코어 PCB |단순화를 위해 구리 회로 패턴 모델링은 생략    |
 |열전도체(TIM)     |써멀그리스 또는 테잎    |기판과 히트싱크 사이의 열전도 조건을 규정     |
 |히트싱크(HEATSINK)|알미늄 소재, 냉각핀 적용|냉각핀 부분과 외부 공기 온도 및 열전달 계수 설정으로 조건 설정 가능|
@@ -359,18 +359,132 @@ exit 0
 * 이상 2개의 파일을, 원하는 장소에 배치해 놓고, 어느 곳에서나 실행할 수 있도록 bash 쉘의 설정파일(`.bashrc`)을 편집하여 경로(Path)를 잡아주거나, 또는 심볼릭링크를 이용하여 설정해 준다.  예컨데 `~/.bashrc` 파일을 편집기로 열어서 다음과 같은 식으로 구문을 추가해주면 된다.
 
 ```bash
+# STEP2UNV for Elmer with Salome
+export PATH="/home/osboxes/.config/salome/step2unv:$PATH"
+```
 
+* 그리고, 이상의 셋팅 과정을 구체적으로 다음 주소에 기록해 두었으므로, 설치장소의 경로만 수정해서 그대로 따라하면 된다.
+
+```http
+https://github.com/dymaxionkim/ElmerFEM_Examples/tree/master/20170911_Salome_Script_STEP2UNV
 ```
 
 
 ### (4) 3D 모델링 데이타로부터 살로메 스크립트를 이용하여 매쉬 생성
 
+* 3D 모델링 데이타는 다음 명령으로 작업 디렉토리를 만들고, 데이타를 다운로드 받자.
+
+```bash
+$ mkdir ~/LED
+$ cd LED
+$ wget https://github.com/dymaxionkim/Elmer_Examples_for_CADG/raw/master/CADG_06_Elmer_Conduction/3.Elmer/LED.stp
+```
+
+* `step2unv`살로메 스크립트의 셋팅을 완료하였다면, 어느 경로에서나 자유롭게 다음 명령을 쳐서 스크립트를 실행할 수 있게 된다.  예컨데 아래와 같은 식으로 명령을 주면 된다.
+
+```bash
+$ step2unv
+```
+
+* 명령을 실행하면, 백그라운드에서 살로메가 실행되면서 스크립트를 시작하게 된다.  살로메 실행과 관련된 약간의 메시지가 나온 후, 다음의 구문이 나온다.
+
+```
+----------------------------------------------------
+Input your working directory :
+```
+
+* 그러면 지시 그대로, STEP 파일이 들어있는 경로를 써 넣어 주고 엔터를 친다. (아래는 예시)
+
+```
+/home/osboxes/LED
+```
+
+* 그 다음, STEP 파일 이름을 입력하라는 메시지가 나온다.
+
+```
+----------------------------------------------------
+Input your STEP File Name :
+```
+
+* 그러면 지시 그대로, STEP 파일의 이름을 정확하게 써 넣어 주고 엔터를 친다. (아래는 예시)
+
+```
+LED.stp
+```
+
+* 이제, STEP 파일로부터 매시를 생성하기 위한 파라미터를 입력한다.   매시 사이즈의 단위는 미터[m]이다.  (아래는 예시)
+
+```
+----------------------------------------------------
+----- Mesh Parameters -----
+MinMeshSize[m] : 0
+MaxMeshSize[m] : 0.005
+SetFiness ::: 0=VeryCoarse, 1=Coarse, 2=Moderate, 3=Fine, 4=VeryFine, 5=Custom
+SetFineness[0~5] : 4
+```
+
+* 파라미터 입력을 완료하면, 작업이 수행된다.  조건에 따라 소요되는 시간이 다르기 때문에, 다음과 같은 형태의 메시지가 순차적으로 나오는지 확인하자.
+
+```
+----------------------------------------------------
+----- Read STEP file ...
+----------------------------------------------------
+----- Mesh Computing ...
+----------------------------------------------------
+----- Make UNV ...
+----------------------------------------------------
+Information about mesh:
+Number of nodes       :  222542
+Number of edges       :  2325
+Number of faces       :  35807
+          triangles   :  35807
+          quadrangles :  0
+          polygons    :  0
+Number of volumes     :  149805
+          tetrahedrons:  149805
+          hexahedrons :  0
+          prisms      :  0
+          pyramids    :  0
+          polyhedrons :  0
+----------------------------------------------------
+----- FINISHED ! -----
+```
+
+* `FINISHED !` 라는 메시지가 나오면 이상없이 완료된 것이다.  해당 작업 디렉토리 안에는 `LED.unv` 파일이 생성되어 있을 것이다.
+
+
 ### (5) 생성된 매쉬 파일을 ElmerGrid를 이용하여 엘머용 매쉬 포멧으로 변환
+
+* 생성된 `LED.unv` 파일은, ElmerGUI 상에서 `Open` 메뉴로 직접 읽어들여도 된다.
+* 다만, 여기서는 터미널상에서 `ElmerGrid` 명령어를 사용하여 엘머 전용 매시 포멧으로 직접 변환하는 방법을 사용해 보자.
+* `ElmerGrid` 명령어를 터미널에 쳐 넣으면, 간단한 설명이 나온다.  대체로 여기에 나오는 설명만으로도 매시 포멧을 변환하는 기능을 활용하는데는 충분한 정보를 얻을 수 있다.
+* 설명을 참고해서, 다음과 같은 명령을 수행한다.
+
+```bash
+$ ElmerGrid 8 2 LED.unv
+$ cd LED
+```
+
+* 그러면 `LED`라는 디렉토리가 생기면서 그 안에 엘머 매시 포멧의 파일들이 생성된다.
+
+```
+entities.sif
+mesh.boundary
+mesh.elements
+mesh.header
+mesh.names
+mesh.nodes
+```
+
+* 이 파일들은, ElmerGUI에서 unv 파일을 읽어들인 후 `Save Project`로 엘머 매시파일을 저장한 경우와는 약간 다르다.  즉 `entities.sif`, `mesh.names`라는 2개의 파일이 더 만들어져 있다.
+* `entities.sif` 파일은, sif 파일을 사용자가 직접 작성하기 쉽도록 Body 및 Boundary Condition 항목들이 미리 작성되어 있다.  나머지 필요한 부분들을 추가해서 작성하여 사용하면 된다.
+* `mesh.names` 파일은, unv 파일에서 포함하고 있는 Body 및 Boundary들의 명칭을 Elmer에서의 번호로 일대일 대응시켜 정의해 두고 있다.  ElmerGUI에서는 명칭 정보를 사용할 수 없지만, ElmerGrid를 사용하여 매시변환을 하면 이와 같이 명칭 정보를 그대로 활용할 수 있게 된다.  사용자가 살로메에서 매시 생성 작업을 할 때, Body 및 Boundary 그룹에 적절한 명칭을 미리 정해 주었다면 그대로 활용할 수 있게 되므로 굳이 ElmerGUI의 도움 없이도 sif 파일을 직접 텍스트 에디터로 작성하는데 문제가 없을 것이다.
+* 물론, 이렇게 생성된 엘머 매시파일은 당연히 ElmerGUI에서도 읽어들일 수 있다.  다만 엘머매시 파일을 읽을 때는 `Load Mesh` 메뉴를 사용해서 읽어들이면 된다.
 
 
 ## 4. 해석 실시
 
-### (1) 시뮬레이션 인풋 파일 작성
+### (1) 시뮬레이션 인풋 파일(sif) 작성
 
 ### (2) ElmerSolver 실행
 

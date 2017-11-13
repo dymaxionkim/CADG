@@ -121,29 +121,26 @@ output: pdf_document
 * 구조해석을 할 경우에는 2번과 같이 `Second Order`는 반드시 체크해 준다.  각 매쉬 엘리먼트의 각변의 가운데에 절점을 하나씩 더 추가하는 것이다.  해석결과의 정확도를 높이고, 구조물이 'Stuck'되는 현상을 방지해서 특이점(Singularity)에 의해 엉뚱한 값이 나오는 현상을 줄여준다.
 * 3번의 `Fineness`는, 정해준 엘리먼트 사이즈 범위 내에서 엘리먼트의 사이즈가 점차 성장해 가는 비율을 결정하는 것이다.  일단은 기본 상태로 두었다.
 * 설정이 완료되면 `OK`를 눌러 빠져나온다.  그리고 `Create Mesh` 팝업창도 `Apply and Close`를 눌러 빠져나온다.
-
-![9](Pictures/CADG_03_Elmer_Structure_09.png){width=20%}
-
 * 그러면 트리 영역에 `Mesh`피쳐가 생성되어 있음을 볼 수 있다.  이 안의 `Hypotheses` 및 `Algorithms`에 금방 설정한 사항들이 피쳐(Feature)로서 들어있음도 확인할 수 있다.  수정하고 싶으면 해당 피쳐의 컨텍스트메뉴(마우스 오른쪽 버튼을 누르면 나오는 메뉴)에서 `Edit Hypothesis`를 선택하고 수정하면 된다.
 * 그리고 `Mesh_1` 피쳐 안에는, 그 위에서 설정된 `Hypotheses` 및 `Algorithms`를 상속받아 `Mesh_1`에 적용되었음이 보인다.
 * 현재까지는 Geometry 중에서 Body 하나만 들어와 있는 상태이며, 먼저 Geometry 모드에서 만들어둔 그룹들은 아직 `Mesh_1`로 상속되어 있지는 않다.  따라서 이제 그룹을 가져오는 작업을 하자.
 * 상단 메뉴에서 `Mesh - Create Groups from Geometry`를 선택한다.  그러면 아래와 같은 팝업창이 나타난다.
 
-![10](Pictures/CADG_03_Elmer_Structure_09.png){width=20%}
+![09](Pictures/CADG_03_Elmer_Structure_09.png){width=20%}
 
-* `Figure 10`에서, 1번 영역에는 그룹을 적용할 매쉬를 선택해 넣어준다.
+* `Figure 9`에서, 1번 영역에는 그룹을 적용할 매쉬를 선택해 넣어준다.
 * 2번은 Geometry에서 Elements를 가져오기 위한 것이다.  `Shift`키를 누른 상태에서, 원하는 복수의 Geometry 그룹들을 한꺼번에 선택한 후, 2번 버튼을 누르면 전부 다 일괄 등록된다.
 * 그 다음, 그대로 3번 버튼을 누르면 위의 2번에서 선택된 것들이 전부 Node로도 들어오게 된다.  나중에 경계조건을 지정할 때의 면(Surface)는, 실제로는 해당 면에 있는 절점(Nodes)이므로, 반드시 이렇게 등록해 주어야 할 필요가 있다.
 * 전부 다 등록되었으면, `Apply and Close` 버튼을 눌러 팝업창을 닫는다.  그러면 트리 영역에 금방 등록했던 그룹들이, `Mesh_1`안에 `Groups od Nodes` 및 `Groups of Faces`로 등록되어 있음을 확인할 수 있다.
 * 이제 매쉬를 생성하기 전에 필요한 작업은 다 마쳤다.  이제 매쉬 생성 작업을 실행시키면 된다.  
 
-![11](Pictures/CADG_03_Elmer_Structure_10.png){width=50%}
+![10](Pictures/CADG_03_Elmer_Structure_10.png){width=50%}
 
-* `Figure 11`에서, 금방 모든 셋팅을 마친 1번 피쳐 즉 `Mesh_1`의 컨텍스트메뉴(마우스 오른쪽 버튼을 누르면 나오는 메뉴)에서 `Compute`를 누르면, 매쉬 생성 작업을 시작하게 된다.  조금 기다리면 매쉬 생성이 완료되고, 매쉬에 관한 정보를 알려주는 창이 뜬다.
+* `Figure 10`에서, 금방 모든 셋팅을 마친 1번 피쳐 즉 `Mesh_1`의 컨텍스트메뉴(마우스 오른쪽 버튼을 누르면 나오는 메뉴)에서 `Compute`를 누르면, 매쉬 생성 작업을 시작하게 된다.  조금 기다리면 매쉬 생성이 완료되고, 매쉬에 관한 정보를 알려주는 창이 뜬다.
 * 만일 조건이 맞지 않아 매쉬 생성에 실패할 경우, 어떤 부분에서 에러가 났는지를 알려주는 창이 대신 뜨게 된다.  이때는 `Hypotheses`의 파라미터를 조정하여 좀 더 잘 생성될 수 있도록 조건을 맞춘 후, 다시 생성을 실행하면 된다.
-* 매쉬가 성공적으로 생성된 후, `Figure 12`와 같이 상태를 확인해 보자.
+* 매쉬가 성공적으로 생성된 후, `Figure 11`와 같이 상태를 확인해 보자.
 
-![12](Pictures/CADG_03_Elmer_Structure_11.png){width=50%}
+![11](Pictures/CADG_03_Elmer_Structure_11.png){width=50%}
 
 * 상단 메뉴에서 `File - Save`를 선택해서 여기까지 작업한 자료를 저장해 둔다.
 * 생성된 매쉬는, ElmerGUI에서 직접 읽어들일 수 있는 unv 포멧으로 출력(Export) 한다.  (현재 시점에서는 unv 포멧만이 유일하게 큰 문제없이 가능한 것 같다.)
@@ -155,7 +152,7 @@ output: pdf_document
 
 * 우선 ElmerGUI를 실행시켜 보면, 아래와 같은 매우 심플한 GUI 창이 뜬다.
 
-![13](Pictures/CADG_03_Elmer_Structure_12.png){width=50%}
+![12](Pictures/CADG_03_Elmer_Structure_12.png){width=50%}
 
 * 상단 메뉴에 모든 기능들이 들어있고, 그 바로 밑의 아이콘들은 그중 몇가지를 내놓은 것이다.  자주 사용하는 메뉴들의 기능을 요약해 보면 다음과 같다.
 
@@ -186,7 +183,7 @@ output: pdf_document
 * 이제 메뉴에서 `File - Open`한 후, 살로메에서 생성해 두었던 unv 매쉬 파일을 선택하여 불러들인다.
 * 잘 불러들여져서 화면에 매쉬모델이 뜨면, 임의의 면을 더블클릭해서, 원래 살로메에서 구분해 두었던 그룹별로 면들이 잘 분할되어 있는지 확인해 보자.
 
-![14](Pictures/CADG_03_Elmer_Structure_13.png){width=50%}
+![13](Pictures/CADG_03_Elmer_Structure_13.png){width=50%}
 
 * 이후, 메뉴에서 `File - Save project`를 해 주면, unv 파일이 위치한 장소에 다음과 같은 파일들이 생성되는 것을 확인할 수 있다.
 
