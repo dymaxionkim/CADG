@@ -380,4 +380,4 @@ https://github.com/dymaxionkim/Elmer_Examples_for_CADG/tree/master/CADG_03_Elmer
 
 * J.M.LEE, A STUDY ON THE VIBRATION CHARACTERISTICS OF A LARGE SIZE KOREAN BELL, Journal of Sound and Vibration (2002)
 
-> http://doi.org.ololo.sci-hub.bz/10.1006/jsvi.2002.5092
+> http://sci-hub.bz/10.1006/jsvi.2002.5092
