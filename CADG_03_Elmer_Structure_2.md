@@ -355,6 +355,12 @@ case30001par0010.vtu case30002par0010.vtu case30003par0010.vtu case30004par0010.
 ## 5. 맺음말
 
 * 가장 기본적인 선형 정적 응력해석을 엘머에서 제공하는 몇 가지 방법으로 해 보았다.
+* 본 편의 모델링 데이타는 다음 장소에서 다운로드 받으면 된다.
+
+```
+https://github.com/dymaxionkim/Elmer_Examples_for_CADG/tree/master/CADG_03_Elmer_Structure
+```
+
 * 본 예제를 통해 ElmerGUI를 중심으로 한 해석절차와 기본적인 기법을 습득할 수 있었다.
 
 
@@ -375,13 +381,3 @@ case30001par0010.vtu case30002par0010.vtu case30003par0010.vtu case30004par0010.
 * J.M.LEE, A STUDY ON THE VIBRATION CHARACTERISTICS OF A LARGE SIZE KOREAN BELL, Journal of Sound and Vibration (2002)
 
 > http://doi.org.ololo.sci-hub.bz/10.1006/jsvi.2002.5092
-
-* 성덕대왕신종 고리쇠 관련 에피소드
-
-> http://www.jikjimuseum.org/wind/content.asp? \
-> pWID=04&pID=413&pPageID=0007v~&pPageCnt=8& \
-> pBlockID=1&pBlockCnt=1&pDir=S&pSearch=&pSearchStr=
-
-* 반론
-
-> http://scieng.net/tech/16616
