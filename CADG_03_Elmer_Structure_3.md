@@ -1,7 +1,7 @@
 ---
 title: "엘머로 해 보는 구조(Mechanical Structure) 해석 (하)"
 author: DymaxionKim
-date: 2017-11-17
+date: 2017-12-14
 geometry: "left=3cm,right=2cm,top=3cm,bottom=2cm"
 mainfont: Noto Sans CJK KR
 monofont: D2Coding
@@ -221,3 +221,9 @@ https://github.com/dymaxionkim/Elmer_Examples_for_CADG/tree/master/CADG_03_Elmer
 ```
 
 * 본 예제를 통해 ElmerGUI를 중심으로 한 구조해석절차와 기본적인 기법을 습득할 수 있었다.
+
+
+## 5. 참고사항
+
+* 최근 정부 출연으로 'HPC 이노베이션 허브'가 경기도 성남에서 개소하였는데, PC보다 훨씬 우수한 컴퓨팅 자원을 무료로 활용할 수 있다.  엘머를 이곳의 HPC에 간단하게 설치하고 사이즈가 큰 문제에서 다수의 연산코어를 병렬 연산시키는 것이 가능하므로, 문제를 해결할 때 도움이 될 수 있다고 생각된다.  홈페이지 주소는 http://openhpc.or.kr 이며, 온라인으로 예약하고 문의 및 확인전화를 하면 된다.
+* 시험삼아 이곳을 이용해 본 사용기는 이곳( https://github.com/dymaxionkim/HPC_Innovation_Hub )에 써 두었으므로, 관심있는 분은 참고가 되시기를 바란다.
