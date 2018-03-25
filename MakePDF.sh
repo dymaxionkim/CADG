@@ -1,7 +1,7 @@
 #!/bin/bash
 #############################################################
 # Script to convert every documents
-# 20170824, DymaxionKim
+# 20180320, DymaxionKim
 # Pre-Requisites : TexLive, Pandoc, Noto Sans CJK KR
 
 # Variables
@@ -13,11 +13,12 @@ E="CADG_03_Elmer_Structure_2"
 F="CADG_03_Elmer_Structure_3"
 G="CADG_04_Elmer_Dynamics"
 H="CADG_05_Elmer_Acoustic"
-I="CADG_06_Elmer_Conduction"
-J="CADG_07_Elmer_Convection"
-K="CADG_08_Elmer_Radiation"
-L="CADG_09_Elmer_MultiBody"
-M="CADG_10_Elmer_Optimization"
+I="CADG_06_Elmer_Conduction_1"
+J="CADG_06_Elmer_Conduction_2"
+K="CADG_07_Elmer_Convection"
+L="CADG_08_Elmer_Radiation"
+M="CADG_09_Elmer_MultiBody"
+N="CADG_10_Elmer_Optimization"
 PDF="--latex-engine=xelatex -s -S --dpi=600 --table-of-contents --highlight-style tango -f markdown+multiline_tables+grid_tables+pipe_tables+table_captions"
 DOCX="-s -S --table-of-contents --highlight-style tango -f markdown+multiline_tables+grid_tables+pipe_tables+table_captions --reference-docx=Format.docx"
 ODT="-s -S --highlight-style tango -f markdown+multiline_tables+grid_tables+pipe_tables+table_captions --reference-odt=Format.odt"
@@ -39,6 +40,7 @@ pandoc ${J}.md -o ./pdf/${J}.pdf ${PDF}
 pandoc ${K}.md -o ./pdf/${K}.pdf ${PDF}
 pandoc ${L}.md -o ./pdf/${L}.pdf ${PDF}
 pandoc ${M}.md -o ./pdf/${M}.pdf ${PDF}
+pandoc ${N}.md -o ./pdf/${N}.pdf ${PDF}
 
 # md 2 docx
 echo "Making DOCX files.."
@@ -55,6 +57,7 @@ pandoc ${J}.md -o ./docx/${J}.docx ${DOCX}
 pandoc ${K}.md -o ./docx/${K}.docx ${DOCX}
 pandoc ${L}.md -o ./docx/${L}.docx ${DOCX}
 pandoc ${M}.md -o ./docx/${M}.docx ${DOCX}
+pandoc ${N}.md -o ./docx/${N}.docx ${DOCX}
 
 # md 2 odt
 echo "Making ODT files.."
@@ -71,6 +74,7 @@ pandoc ${J}.md -o ./odt/${J}.odt ${ODT}
 pandoc ${K}.md -o ./odt/${K}.odt ${ODT}
 pandoc ${L}.md -o ./odt/${L}.odt ${ODT}
 pandoc ${M}.md -o ./odt/${M}.odt ${ODT}
+pandoc ${N}.md -o ./odt/${N}.odt ${ODT}
 
 echo "Finished !"
 exit 0
