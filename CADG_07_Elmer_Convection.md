@@ -38,3 +38,147 @@ output: pdf_document
 ### (2) 매쉬 작업
 * 가장 간편한 방법은, 지난 호에서 소개한 step2unv.py 스크립트를 이용하여 자동화한 Salome 작업을 실시하도록 하는 것이다.
 * 또는 그다지 복잡한 형태는 아니기 때문에, 직접 Salome GUI에서 매쉬 작업을 실시해도 무방하다.
+
+
+
+
+
+
+### step2unv
+
+* Download and Path (on Linux)
+
+```bash
+mkdir ~/.config/salome/step2unv
+wget -O ~/.config/salome/step2unv/step2unv https://raw.githubusercontent.com/dymaxionkim/ElmerFEM_Examples/master/20170911_Salome_Script_STEP2UNV/step2unv
+wget -O ~/.config/salome/step2unv/step2unv.py https://raw.githubusercontent.com/dymaxionkim/ElmerFEM_Examples/master/20170911_Salome_Script_STEP2UNV/step2unv.py
+wget -O ~/.config/salome/step2unv/Readme.md https://raw.githubusercontent.com/dymaxionkim/ElmerFEM_Examples/master/20170911_Salome_Script_STEP2UNV/Readme.md
+chmod +x ~/.config/salome/step2unv/step2unv
+echo "" >> ~/.bashrc
+echo "# STEP2UNV for Elmer with Salome" >> ~/.bashrc
+echo "export PATH=\"/home/osboxes/.config/salome/step2unv:\$PATH\"" >> ~/.bashrc
+echo "" >> ~/.bashrc
+```
+
+## How to use
+
+* Prepare geometry files
+  - Format : STEP
+  - Single STEP file that includes multi bodies
+  - No interferences with two bodies, but only Contact
+  - The STEP files should be in the working directory
+
+* Excecute script
+
+```bash
+$ step2unv
+runSalome running on CQ57
+INFO:MainThread:Problem loading PortManager file: /tmp/.omniORB_PortManager.cfg
+INFO:PortManager:Problem loading PortManager file: /tmp/.omniORB_PortManager.cfg
+Searching for a free port for naming service: 2810 - OK
+Searching Naming Service + found in 0.1 seconds 
+Searching /Registry in Naming Service + found in 0.5 seconds 
+Searching /Kernel/ModulCatalog in Naming Service +th. 140357089298240 - Trace /volatile/salome/SALOME-8.2.0-UB16.04/SOURCES/KERNEL/src/ModuleCatalog/SALOME_ModuleCatalog_Server.cxx [101] : Module Catalog Server: Naming Service was found
+Warning: this type (Study,objref) already exists, it will be ignored.
+ found in 0.5 seconds 
+RunStudy
+Searching /myStudyManager in Naming Service ++ found in 1.0 seconds 
+Searching /Containers/CQ57/FactoryServer in Naming Service +Warning, no type found for resource "localhost", using default value "single_machine"
+++ found in 1.5 seconds 
+Start SALOME, elapsed time :   3.7 seconds
+createNewStudy
+extStudy 1
+----------------------------------------------------
+Input your working directory :
+/home/osboxes/github/Elmer_Examples_for_CADG/CADG_07_Elmer_Convection/2.step2unv
+----------------------------------------------------
+Input your STEP File Name :
+HeatSink.step
+----------------------------------------------------
+----- Mesh Parameters -----
+MinMeshSize[m] : 0
+MaxMeshSize[m] : 5
+SetFiness ::: 0=VeryCoarse, 1=Coarse, 2=Moderate, 3=Fine, 4=VeryFine, 5=Custom
+SetFineness[0~5] : 3
+----------------------------------------------------
+----- Read STEP file ... 
+----------------------------------------------------
+----- Mesh Computing ... 
+----------------------------------------------------
+----- Make UNV ... 
+----------------------------------------------------
+Information about mesh:
+Number of nodes       :  14653
+Number of edges       :  690
+Number of faces       :  1694
+          triangles   :  1694
+          quadrangles :  0
+          polygons    :  0
+Number of volumes     :  10360
+          tetrahedrons:  10360
+          hexahedrons :  0
+          prisms      :  0
+          pyramids    :  0
+          polyhedrons :  0
+----------------------------------------------------
+----- FINISHED ! -----
+Terminating SALOME on port 2810...
+th. 140076293261056 - Trace /volatile/salome/SALOME-8.2.0-UB16.04/SOURCES/KERNEL/src/NamingService/SALOME_NamingService.cxx [1379] : Destroy_Directory(): CosNaming::NamingContext::NoEmpty /Study/ is not empty
+It takes 68 seconds to complete this task.
+osboxes@CQ57:~$ step2unv
+runSalome running on CQ57
+Searching for a free port for naming service: 2810 - OK
+Searching Naming Service + found in 0.1 seconds 
+Searching /Registry in Naming Service + found in 0.5 seconds 
+Searching /Kernel/ModulCatalog in Naming Service +th. 140296960812864 - Trace /volatile/salome/SALOME-8.2.0-UB16.04/SOURCES/KERNEL/src/ModuleCatalog/SALOME_ModuleCatalog_Server.cxx [101] : Module Catalog Server: Naming Service was found
+Warning: this type (Study,objref) already exists, it will be ignored.
+ found in 0.5 seconds 
+RunStudy
+Searching /myStudyManager in Naming Service + found in 0.5 seconds 
+Searching /Containers/CQ57/FactoryServer in Naming Service +Warning, no type found for resource "localhost", using default value "single_machine"
+++ found in 1.5 seconds 
+Start SALOME, elapsed time :   3.2 seconds
+createNewStudy
+extStudy 1
+----------------------------------------------------
+Input your working directory :
+/home/osboxes/github/Elmer_Examples_for_CADG/CADG_07_Elmer_Convection/2.step2unv
+----------------------------------------------------
+Input your STEP File Name :
+HeatSink.step
+----------------------------------------------------
+----- Mesh Parameters -----
+MinMeshSize[m] : 0
+MaxMeshSize[m] : 0.005
+SetFiness ::: 0=VeryCoarse, 1=Coarse, 2=Moderate, 3=Fine, 4=VeryFine, 5=Custom
+SetFineness[0~5] : 3
+----------------------------------------------------
+----- Read STEP file ... 
+----------------------------------------------------
+----- Mesh Computing ... 
+----------------------------------------------------
+----- Make UNV ... 
+----------------------------------------------------
+Information about mesh:
+Number of nodes       :  211008
+Number of edges       :  1618
+Number of faces       :  14066
+          triangles   :  14066
+          quadrangles :  0
+          polygons    :  0
+Number of volumes     :  148848
+          tetrahedrons:  148848
+          hexahedrons :  0
+          prisms      :  0
+          pyramids    :  0
+          polyhedrons :  0
+----------------------------------------------------
+----- FINISHED ! -----
+Terminating SALOME on port 2810...
+th. 140062467528448 - Trace /volatile/salome/SALOME-8.2.0-UB16.04/SOURCES/KERNEL/src/NamingService/SALOME_NamingService.cxx [1379] : Destroy_Directory(): CosNaming::NamingContext::NoEmpty /Study/ is not empty
+It takes 89 seconds to complete this task.
+```
+
+
+
+
