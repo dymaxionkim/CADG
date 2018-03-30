@@ -1,7 +1,7 @@
 ---
 title: "엘머로 해 보는 대류열전달(Heat Convection) 해석"
 author: DymaxionKim
-date: 2017-08-??
+date: 2018-03-26
 geometry: "left=3cm,right=2cm,top=3cm,bottom=2cm"
 mainfont: Noto Sans CJK KR
 monofont: D2Coding
@@ -17,8 +17,8 @@ output: pdf_document
 ---
 
 ## 1. 개요
-* 엘머에서 제공하는 유체동역학 해석 방법은 유한요소법(FEM)인데, 이는 다른 전문적인 CFD 소프트웨어들이 제공하는 유한체적법(FVM)보다 단점이 많다고 한다.  몇 가지 한계점이 있는데, 우선 조건에 따라 수렴에 실패할 확률이 상대적으로 높다.  때문에 대체로 가급적 레이놀즈수가 너무 높아지지 않도록 조건을 잡아줄 필요가 있다.  달리말해, 아음속/초음속 수준의 압축성 유체거동을 해석하거나 하는 등의 극단적인 케이스를 다루기가 꽤 곤란하다는 점이다.  이런 문제를 풀 때는 전문적인 전용 소프트웨어를 사용하는 것이 좋겠다.  오픈소스로도 OpenFOAM, SU2 등의 좋은 코드들이 있으므로 대안이 충분히 있다.
-* 또한 기본적으로 제공해 주는 난류모델이 기본적인 것(RANS 모델) 밖에 없다.  k-epsilon 및 k-omega 모델이 그것이고, 이보다 더욱 엄밀한 LES 모델은 별도로 구현하거나 다른 사람이 성공한 예제를 찾아서 따라하는 수 밖에 없다.  난류 경계층 내부의 격렬한 거동을 살펴볼 것이 아닌 일반적인 경우라면 k-epsilon 모델로도 충분하다고 생각된다.
+* 엘머에서 제공하는 유체동역학 해석 방법은 유한요소법(FEM)인데, 이는 다른 전문적인 CFD 소프트웨어들이 주로 제공하는 유한체적법(FVM)보다 단점이 많다고 한다.  몇 가지 한계점이 있는데, 우선 조건에 따라 수렴에 실패할 확률이 상대적으로 높다.  때문에 대체로 가급적 레이놀즈수가 너무 높아지지 않도록 조건을 잡아줄 필요가 있다.  달리말해, 아음속 또는 초음속 수준의 압축성 유체거동을 해석하거나 하는 등의 극단적인 케이스를 다루기가 꽤 곤란하다는 점이다.  이런 문제를 풀 때는 전문적인 전용 소프트웨어를 사용하는 것이 좋겠다.  오픈소스로도 OpenFOAM, SU2 등의 좋은 코드들이 있으므로 대안이 충분히 있다.
+* 또한 기본 패키지에서 제공해 주는 난류모델이 기본적인 것(RANS 모델 ; 난류영역 내부의 운동에너지와 소산률을 근사적으로 추산해서 간단한 모델로 구성하는 방식) 밖에 없다.  k-epsilon 및 k-omega 모델이 그것이고, 이보다 더욱 엄밀한 LES 모델()은 별도로 구현하거나 다른 사람이 성공한 예제를 찾아서 따라하는 수 밖에 없다.  난류 경계층 내부의 격렬한 거동을 살펴볼 것이 아닌 일반적인 경우라면 k-epsilon 모델로도 충분하다고 생각된다.
 * 본 예제에서는 이런 제한사항들을 염두에 두면서, 기본적인 형태의 히트싱크에 공기가 흘러가는 형태를 시뮬레이션해 보고, 이러한 유체거동에 의한 대류열전달 현상을 관찰해 보기로 한다.
 
 ## 2. 시스템 모델
@@ -72,20 +72,19 @@ echo "" >> ~/.bashrc
 
 ```bash
 $ step2unv
-runSalome running on CQ57
-INFO:MainThread:Problem loading PortManager file: /tmp/.omniORB_PortManager.cfg
-INFO:PortManager:Problem loading PortManager file: /tmp/.omniORB_PortManager.cfg
-Searching for a free port for naming service: 2810 - OK
-Searching Naming Service + found in 0.1 seconds 
-Searching /Registry in Naming Service + found in 0.5 seconds 
-Searching /Kernel/ModulCatalog in Naming Service +th. 140357089298240 - Trace /volatile/salome/SALOME-8.2.0-UB16.04/SOURCES/KERNEL/src/ModuleCatalog/SALOME_ModuleCatalog_Server.cxx [101] : Module Catalog Server: Naming Service was found
+runSalome running on osboxes
+Searching for a free port for naming service: 2811 - OK
+Searching Naming Service + found in 0.1 seconds
+Searching /Registry in Naming Service + found in 0.5 seconds
+Searching /Kernel/ModulCatalog in Naming Service +th. 140404398147392 - Trace /volatile/salome/SALOME-8.3.0-UB16.04/SOURCES/KERNEL/src/ModuleCatalog/SALOME_ModuleCatalog_Server.cxx [101] : Module Catalog Server: Naming Service was found
 Warning: this type (Study,objref) already exists, it will be ignored.
- found in 0.5 seconds 
+Warning: this type (SALOME_MED/MEDCouplingFieldDoubleCorbaInterface,objref) already exists, it will be ignored.
+ found in 0.5 seconds
 RunStudy
-Searching /myStudyManager in Naming Service ++ found in 1.0 seconds 
-Searching /Containers/CQ57/FactoryServer in Naming Service +Warning, no type found for resource "localhost", using default value "single_machine"
-++ found in 1.5 seconds 
-Start SALOME, elapsed time :   3.7 seconds
+Searching /myStudyManager in Naming Service + found in 0.5 seconds
+Searching /Containers/osboxes/FactoryServer in Naming Service +Warning, no type found for resource "localhost", using default value "single_machine"
+ found in 0.5 seconds
+Start SALOME, elapsed time :   2.1 seconds
 createNewStudy
 extStudy 1
 ----------------------------------------------------
@@ -97,88 +96,33 @@ HeatSink.step
 ----------------------------------------------------
 ----- Mesh Parameters -----
 MinMeshSize[m] : 0
-MaxMeshSize[m] : 5
+MaxMeshSize[m] : 0.002
 SetFiness ::: 0=VeryCoarse, 1=Coarse, 2=Moderate, 3=Fine, 4=VeryFine, 5=Custom
-SetFineness[0~5] : 3
+SetFineness[0~5] : 2
 ----------------------------------------------------
------ Read STEP file ... 
+----- Read STEP file ...
 ----------------------------------------------------
------ Mesh Computing ... 
+----- Mesh Computing ...
 ----------------------------------------------------
------ Make UNV ... 
+----- Make UNV ...
 ----------------------------------------------------
 Information about mesh:
-Number of nodes       :  14653
-Number of edges       :  690
-Number of faces       :  1694
-          triangles   :  1694
+Number of nodes       :  2055027
+Number of edges       :  3180
+Number of faces       :  75792
+          triangles   :  75792
           quadrangles :  0
           polygons    :  0
-Number of volumes     :  10360
-          tetrahedrons:  10360
+Number of volumes     :  1479452
+          tetrahedrons:  1479452
           hexahedrons :  0
           prisms      :  0
           pyramids    :  0
           polyhedrons :  0
 ----------------------------------------------------
 ----- FINISHED ! -----
-Terminating SALOME on port 2810...
-th. 140076293261056 - Trace /volatile/salome/SALOME-8.2.0-UB16.04/SOURCES/KERNEL/src/NamingService/SALOME_NamingService.cxx [1379] : Destroy_Directory(): CosNaming::NamingContext::NoEmpty /Study/ is not empty
-It takes 68 seconds to complete this task.
-osboxes@CQ57:~$ step2unv
-runSalome running on CQ57
-Searching for a free port for naming service: 2810 - OK
-Searching Naming Service + found in 0.1 seconds 
-Searching /Registry in Naming Service + found in 0.5 seconds 
-Searching /Kernel/ModulCatalog in Naming Service +th. 140296960812864 - Trace /volatile/salome/SALOME-8.2.0-UB16.04/SOURCES/KERNEL/src/ModuleCatalog/SALOME_ModuleCatalog_Server.cxx [101] : Module Catalog Server: Naming Service was found
-Warning: this type (Study,objref) already exists, it will be ignored.
- found in 0.5 seconds 
-RunStudy
-Searching /myStudyManager in Naming Service + found in 0.5 seconds 
-Searching /Containers/CQ57/FactoryServer in Naming Service +Warning, no type found for resource "localhost", using default value "single_machine"
-++ found in 1.5 seconds 
-Start SALOME, elapsed time :   3.2 seconds
-createNewStudy
-extStudy 1
-----------------------------------------------------
-Input your working directory :
-/home/osboxes/github/Elmer_Examples_for_CADG/CADG_07_Elmer_Convection/2.step2unv
-----------------------------------------------------
-Input your STEP File Name :
-HeatSink.step
-----------------------------------------------------
------ Mesh Parameters -----
-MinMeshSize[m] : 0
-MaxMeshSize[m] : 0.005
-SetFiness ::: 0=VeryCoarse, 1=Coarse, 2=Moderate, 3=Fine, 4=VeryFine, 5=Custom
-SetFineness[0~5] : 3
-----------------------------------------------------
------ Read STEP file ... 
-----------------------------------------------------
------ Mesh Computing ... 
-----------------------------------------------------
------ Make UNV ... 
-----------------------------------------------------
-Information about mesh:
-Number of nodes       :  211008
-Number of edges       :  1618
-Number of faces       :  14066
-          triangles   :  14066
-          quadrangles :  0
-          polygons    :  0
-Number of volumes     :  148848
-          tetrahedrons:  148848
-          hexahedrons :  0
-          prisms      :  0
-          pyramids    :  0
-          polyhedrons :  0
-----------------------------------------------------
------ FINISHED ! -----
-Terminating SALOME on port 2810...
-th. 140062467528448 - Trace /volatile/salome/SALOME-8.2.0-UB16.04/SOURCES/KERNEL/src/NamingService/SALOME_NamingService.cxx [1379] : Destroy_Directory(): CosNaming::NamingContext::NoEmpty /Study/ is not empty
-It takes 89 seconds to complete this task.
+Terminating SALOME on port 2811...
+th. 140123232528128 - Trace /volatile/salome/SALOME-8.3.0-UB16.04/SOURCES/KERNEL/src/NamingService/SALOME_NamingService.cxx [1342] : Destroy_Directory(): CosNaming::NamingContext::NoEmpty /Study/ is not empty
+It takes 267 seconds to complete this task.
+
 ```
-
-
-
-
