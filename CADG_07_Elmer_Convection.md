@@ -18,111 +18,44 @@ output: pdf_document
 
 ## 1. 개요
 * 엘머에서 제공하는 유체동역학 해석 방법은 유한요소법(FEM)인데, 이는 다른 전문적인 CFD 소프트웨어들이 주로 제공하는 유한체적법(FVM)보다 단점이 많다고 한다.  몇 가지 한계점이 있는데, 우선 조건에 따라 수렴에 실패할 확률이 상대적으로 높다.  때문에 대체로 가급적 레이놀즈수가 너무 높아지지 않도록 조건을 잡아줄 필요가 있다.  달리말해, 아음속 또는 초음속 수준의 압축성 유체거동을 해석하거나 하는 등의 극단적인 케이스를 다루기가 꽤 곤란하다는 점이다.  이런 문제를 풀 때는 전문적인 전용 소프트웨어를 사용하는 것이 좋겠다.  오픈소스로도 OpenFOAM, SU2 등의 좋은 코드들이 있으므로 대안이 충분히 있다.
-* 또한 기본 패키지에서 제공해 주는 난류모델이 기본적인 것(RANS 모델 ; 난류영역 내부의 운동에너지와 소산률을 근사적으로 추산해서 간단한 모델로 구성하는 방식) 밖에 없다.  k-epsilon 및 k-omega 모델이 그것이고, 이보다 더욱 엄밀한 LES 모델()은 별도로 구현하거나 다른 사람이 성공한 예제를 찾아서 따라하는 수 밖에 없다.  난류 경계층 내부의 격렬한 거동을 살펴볼 것이 아닌 일반적인 경우라면 k-epsilon 모델로도 충분하다고 생각된다.
+* 또한 기본 패키지에서 제공해 주는 난류모델이 기본적인 것(RANS 모델 ; 난류영역 내부의 운동에너지와 소산률을 근사적으로 추산해서 간단한 모델로 구성하는 방식) 밖에 없다.  k-epsilon 및 k-omega 모델이 그것이고, 이보다 더욱 엄밀한 LES 모델은 별도로 구현하거나 다른 사람이 성공한 예제를 찾아서 따라하는 수 밖에 없다.  난류 경계층 내부의 격렬한 거동을 자세하게 살펴볼 것이 아닌 일반적인 경우라면 k-epsilon 모델로도 충분하다고 생각된다.
 * 본 예제에서는 이런 제한사항들을 염두에 두면서, 기본적인 형태의 히트싱크에 공기가 흘러가는 형태를 시뮬레이션해 보고, 이러한 유체거동에 의한 대류열전달 현상을 관찰해 보기로 한다.
 
 ## 2. 시스템 모델
+* PC급의 컴퓨팅 환경에서는 할당할 수 있는 CPU 자원과 메모리가 제한되기 때문에, 3D 모델로 고분해능의 유체해석(CFD)를 하는데 한계에 부딪힐 때가 많다.  따라서 본 예제에서는, 어느정도의 고분해능을 가지면서 PC에서도 문제를 풀 수 있도록 하기 위해 2D 모델로 구성해 보기로 한다.  다만, 컴퓨팅 자원이 충분하다면 3D 모델로 구성해서 시도해 보는 것도 충분히 의미가 있을 것이다.
 * 본 예제에서는, 복수의 냉각핀(fins)이 돌출되어있는 형태의 알미늄 히트싱크 형태를 모델링하고, 공기와의 접촉면에서 열교환이 발생하도록 적절한 열전달계수를 부여한다.  그리고 히트싱크 아래면의 일부(발열원 부분)에서 발열이 일어나도록 경계조건을 부여할 것이다.
 * 따라서 열전달 경로는, 발열면 - 히트싱크 내부(열전도) - 히트싱크와 공기의 접촉면(열전도) - 공기(대류열전달) 순서로 일어날 것이다.
 * 공기의 대류열전달 모델은, 나비에-스톡스 방정식(Navier-Stokes Eq.)과 열방정식(Heat Eq.)을 동시에 적용한다.  여기에 k-epsilon 난류모델도 추가하여 적용해 본다.
 * 아울러, 중력 방향을 설정하고 이에 영향을 받아 부력(buoyancy)이 작용하도록 엘머에서 제공하는 부시네스크 근사모델(Boussinesq approximation)을 적용한다.
-* 공기의 흐름은, 자연대류를 관찰하고자 할 경우에는 초기값을 아주 약간의 속도만 주고, 입출구 유동이 없도록 잡아주면 된다.  강제대류의 경우, 입구에 적절한 유체 속도값을 주고 출구의 압력을 0으로 해 주는 것이 기본적인 방법이 될 수 있을 것이다.
+* 공기의 흐름은, 자연대류를 관찰하고자 할 경우에는 초기값을 아주 약간의 속도만 주거나 또는 완전히 0으로 주고, 입출구 유동이 없도록 잡아주면 된다.  강제대류의 경우, 입구에 적절한 유체 속도값을 주고 출구의 압력을 0으로 해 주는 것이 기본적인 방법이 될 수 있을 것이다.
 
 ## 3. 전처리 과정
 
-### (1) 3D 모델링
-* 계획한 바와 같이 우선 알미늄 히트싱크 형상을 모델링한다.  이때, 발열면 부분을 별도의 패치(Patch)가 되도록 면을 분리해 주고 모델링하면 경계조건 부여할 때 편리할 것이다.
-* 공기 영역 역시 별도로 모델링한 후, 히트싱크 부분의 영역을 미리 잘라내 준다.
-* 이상 모델링된 형상은 공깅화 히트싱크 2개의 물체로 구성된다고 볼 수 있을 것이다.
+### (1) 2D 모델링(Geometry)
+* 오픈소스 해석기를 위한 가장 간편한 2D 모델 작성 방법은, GMSH 소프트웨어를 이용하는 것이다.
+* GMSH는 기본적인 사용방법만 익히면 상당히 쉽게 원하는 모델을 그리고, 원하는 조건으로 매쉬를 생성하기가 상당히 수월하다.
+* 본 예제에서는 GMSH의 사용방법에 대해서 다루지는 않겠다.  다만 유튜브 또는 GMSH 홈페이지에서 따라하기 동영상을 보면 신속하게 개념을 파악하고 습득할 수 있다.
+* 모델은 다음과 같이 구성하기로 한다.
 
-### (2) 매쉬 작업
-* 가장 간편한 방법은, 지난 호에서 소개한 step2unv.py 스크립트를 이용하여 자동화한 Salome 작업을 실시하도록 하는 것이다.
-* 또는 그다지 복잡한 형태는 아니기 때문에, 직접 Salome GUI에서 매쉬 작업을 실시해도 무방하다.
+* GMSH로 구성한 모델은 다음과 같다.
 
-
-
+* 이때, `Pysical groups`도 정의해주자. 이것을 정의해 주면, 경계조건 등을 부여할 때 작업이 매우 간편해진다.
 
 
+### (2) 매쉬 작업(Mesh)
+* GMSH에서 별다른 설정없이 그대로 매쉬를 생성하고(`2D`), 더 잘게 쪼개준 후(`Refine by splitting`), 사각형 요소망으로 바꿔준다(`Recombine 2D`).
+* 만들어진 매쉬는 GMSH 전용 매쉬 포멧으로 저장하자(`Save Mesh`).
+* GMSH와 Elmer는 모두 오픈소스이기 때문에, GMSH의 `.msh` 매쉬 포멧은 Elmer에서 그냥 읽어들일 수 있다.
 
-### step2unv
 
-* Download and Path (on Linux)
+### (3) Elmer에서 읽어들이기
+* 터미널상에서 `ElmerGrid` 명령을 사용해서 Elmer 전용 매쉬 포멧으로 직접 변환해도 되지만, 본 예제에서는 ElmerGUI 상에서 모든 전처리과정을 수행해 보기로 한다.
+* ElmerGUI를 시작하고, `Open`해서 직접 `.msh` 파일을 불러들인다.
 
-```bash
-mkdir ~/.config/salome/step2unv
-wget -O ~/.config/salome/step2unv/step2unv https://raw.githubusercontent.com/dymaxionkim/ElmerFEM_Examples/master/20170911_Salome_Script_STEP2UNV/step2unv
-wget -O ~/.config/salome/step2unv/step2unv.py https://raw.githubusercontent.com/dymaxionkim/ElmerFEM_Examples/master/20170911_Salome_Script_STEP2UNV/step2unv.py
-wget -O ~/.config/salome/step2unv/Readme.md https://raw.githubusercontent.com/dymaxionkim/ElmerFEM_Examples/master/20170911_Salome_Script_STEP2UNV/Readme.md
-chmod +x ~/.config/salome/step2unv/step2unv
-echo "" >> ~/.bashrc
-echo "# STEP2UNV for Elmer with Salome" >> ~/.bashrc
-echo "export PATH=\"/home/osboxes/.config/salome/step2unv:\$PATH\"" >> ~/.bashrc
-echo "" >> ~/.bashrc
-```
 
-## How to use
 
-* Prepare geometry files
-  - Format : STEP
-  - Single STEP file that includes multi bodies
-  - No interferences with two bodies, but only Contact
-  - The STEP files should be in the working directory
 
-* Excecute script
 
-```bash
-$ step2unv
-runSalome running on osboxes
-Searching for a free port for naming service: 2811 - OK
-Searching Naming Service + found in 0.1 seconds
-Searching /Registry in Naming Service + found in 0.5 seconds
-Searching /Kernel/ModulCatalog in Naming Service +th. 140404398147392 - Trace /volatile/salome/SALOME-8.3.0-UB16.04/SOURCES/KERNEL/src/ModuleCatalog/SALOME_ModuleCatalog_Server.cxx [101] : Module Catalog Server: Naming Service was found
-Warning: this type (Study,objref) already exists, it will be ignored.
-Warning: this type (SALOME_MED/MEDCouplingFieldDoubleCorbaInterface,objref) already exists, it will be ignored.
- found in 0.5 seconds
-RunStudy
-Searching /myStudyManager in Naming Service + found in 0.5 seconds
-Searching /Containers/osboxes/FactoryServer in Naming Service +Warning, no type found for resource "localhost", using default value "single_machine"
- found in 0.5 seconds
-Start SALOME, elapsed time :   2.1 seconds
-createNewStudy
-extStudy 1
-----------------------------------------------------
-Input your working directory :
-/home/osboxes/github/Elmer_Examples_for_CADG/CADG_07_Elmer_Convection/2.step2unv
-----------------------------------------------------
-Input your STEP File Name :
-HeatSink.step
-----------------------------------------------------
------ Mesh Parameters -----
-MinMeshSize[m] : 0
-MaxMeshSize[m] : 0.002
-SetFiness ::: 0=VeryCoarse, 1=Coarse, 2=Moderate, 3=Fine, 4=VeryFine, 5=Custom
-SetFineness[0~5] : 2
-----------------------------------------------------
------ Read STEP file ...
-----------------------------------------------------
------ Mesh Computing ...
-----------------------------------------------------
------ Make UNV ...
-----------------------------------------------------
-Information about mesh:
-Number of nodes       :  2055027
-Number of edges       :  3180
-Number of faces       :  75792
-          triangles   :  75792
-          quadrangles :  0
-          polygons    :  0
-Number of volumes     :  1479452
-          tetrahedrons:  1479452
-          hexahedrons :  0
-          prisms      :  0
-          pyramids    :  0
-          polyhedrons :  0
-----------------------------------------------------
------ FINISHED ! -----
-Terminating SALOME on port 2811...
-th. 140123232528128 - Trace /volatile/salome/SALOME-8.3.0-UB16.04/SOURCES/KERNEL/src/NamingService/SALOME_NamingService.cxx [1342] : Destroy_Directory(): CosNaming::NamingContext::NoEmpty /Study/ is not empty
-It takes 267 seconds to complete this task.
 
-```
+
+
