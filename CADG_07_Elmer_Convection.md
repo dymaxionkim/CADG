@@ -67,7 +67,6 @@ output: pdf_document
 
 ## 4. 해석 조건 설정
 
-<<<<<<< HEAD
 ### (1) case01 : 층류, 자연대류
 * ElmerGUI 상에서 설정하는 경우로 해 보자.
 * `Model - Setup` 메뉴에서 `Result directory = case01`, `Simulation type = Transient`, `Timestep intervals = 600`, `Output intervals = 1`, `Timestep sizes = 0.01`, `Solver input file = case01.sif`로 해 준다.
@@ -138,10 +137,17 @@ $AMBIENT = 25 ![C] External Temperature
 * 이상 조건들을 다 설정했으면, `Sif - Generate` 메뉴를 눌러줘서 `case01.sif` 파일을 생성하고, `File - Save project` 메뉴를 눌러서 저장하자.
 
 
-=======
 ### (1) 다음과 같이 해석 조건을 잡고 하나씩 케이스를 만들어보자.
 
 |케이스  |해석모델 |유속[m/s]   |해석시간[s]   |
+HEAT 	1000 	[W/m^2] 	칩의 단위면적당 발열량
+HTC 	250 	[W/m^2] 	경계면의 열전달계수
+AMBIENT 	25 	[C] 	외부온도
+
+    난류모델은 k-epsilon을 사용하고, 다음 파라미터를 공통으로 적용한다.
+
+변수명 	값 	단위 	설명
+BLT 	0.008 	[m] 	경계층 두께
 |--------|---------|------------|--------------|
 |case01  |층류     |0           |6             |
 |case02  |난류     |0           |6             |
@@ -150,7 +156,7 @@ $AMBIENT = 25 ![C] External Temperature
 |case05  |난류     |0.05        |6             |
 |case06  |난류     |0.05        |60            |
 
-<<<<<<< HEAD
+
 * `Model - Setup` 메뉴에서 `Result directory = case02`, `Solver input file = case02.sif`로 바꿔 써 준다.
 
 
@@ -176,7 +182,7 @@ $AMBIENT = 25 ![C] External Temperature
 
 
 ### (6) case06 : 난류, 강한 자연대류
-=======
+
 * 이때 공통적으로 다음과 같이 파라미터를 잡기로 한다.
 
 |변수명      |값           |단위    |설명                   |
@@ -251,7 +257,7 @@ $$ \mu_t = \rho C_{\mu} \frac{k^2}{\epsilon} $$
 ### (7) case06 : 난류, 강한 자연대류, 1분간
 * 이제 case05에서 6초간의 천이상태변화를 계산해 보았는데, 너무 시간이 짧으므로 이것을 10배로 늘려 60초간 살펴보기 위하여 `Timestep intervals`를 기존의 600에서 6000으로 늘려서 제대로 된 결과를 만들어보자.
 * 물론 6000번의 계산이 이루어지므로, 아무리 요소망의 개수가 작은 2D 모델이라 하더라도 상당한 계산시간을 요하게 될 것이다.
->>>>>>> 4a04949c70359e3f8c10e6bfc743161d7d4153a6
+
 
 * `Model - Setup` 메뉴에서 `Result directory = case06`, `Solver input file = case06.sif`로 바꿔 써 준다.
 
@@ -269,7 +275,7 @@ $$ \mu_t = \rho C_{\mu} \frac{k^2}{\epsilon} $$
 
 ## 8. 맺음말
 
-<<<<<<< HEAD
+
 
 
 
@@ -286,12 +292,11 @@ $$ \mu_t = \rho C_{\mu} \frac{k^2}{\epsilon} $$
 
 
 
-=======
 ## 9. 참고자료
 * Elmer KESolver Source Code : https://github.com/ElmerCSC/elmerfem/blob/devel/fem/src/modules/KESolver.F90
 * Standard k-epsilon model : https://www.cfd-online.com/Wiki/Standard_k-epsilon_model
 * V2-f models : https://www.cfd-online.com/Wiki/V2-f_models
 * RNG k-epsilon model : https://www.cfd-online.com/Wiki/RNG_k-epsilon_model
->>>>>>> 4a04949c70359e3f8c10e6bfc743161d7d4153a6
+
 
 
