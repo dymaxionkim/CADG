@@ -39,9 +39,9 @@ output: pdf_document
 * 본 예제에서는 GMSH의 사용방법에 대해서 다루지는 않겠다.  다만 유튜브 또는 GMSH 홈페이지에서 따라하기 동영상을 보면 신속하게 개념을 파악하고 습득할 수 있다.
 * GMSH 모델은 다음과 같이 구성하기로 한다.
 
-![](Pictures/CADG_06_Elmer_Convection_02.png)
+![](Pictures/CADG_07_Elmer_Convection_02.png)
 
-![](Pictures/CADG_06_Elmer_Convection_01.png)
+![](Pictures/CADG_07_Elmer_Convection_01.png)
 
 * 이때, `Pysical groups`도 정의해주자. 이것을 정의해 주면, 경계조건 등을 부여할 때 작업이 매우 간편해진다.
 * 각 포인트들의 자세한 좌표 등의 정보는 geo 파일을 편집기로 열어서 참조하자.
@@ -50,7 +50,7 @@ output: pdf_document
 ### (2) 매쉬 작업(Mesh)
 * GMSH에서 별다른 설정없이 그대로 매쉬를 생성하고(`2D`), 더 잘게 쪼개준 후(`Refine by splitting`), 사각형 요소망으로 바꿔준다(`Recombine 2D`).
 
-![](Pictures/CADG_06_Elmer_Convection_03.png)
+![](Pictures/CADG_07_Elmer_Convection_03.png)
 
 * 만들어진 매쉬는 GMSH 전용 매쉬 포멧으로 저장하자(`Save Mesh`).
 * GMSH와 Elmer는 모두 오픈소스이기 때문에, GMSH의 `.msh` 매쉬 포멧은 Elmer에서 그냥 읽어들일 수 있다.
@@ -61,7 +61,7 @@ output: pdf_document
 * ElmerGUI를 시작하고, `Open`해서 직접 `.msh` 파일을 불러들인다.
 * 매쉬가 이상없이 읽어들여지면, `Save project`를 선택해서 프로젝트를 원하는 장소에 일단 저장한다.
 
-![](Pictures/CADG_06_Elmer_Convection_04.png)
+![](Pictures/CADG_07_Elmer_Convection_04.png)
 
 
 
@@ -234,7 +234,7 @@ $AMBIENT = 25 ![C] External Temperature
 
 ## 5. 계산 실시
 
-![](Pictures/CADG_06_Elmer_Convection_05.png)
+![](Pictures/CADG_07_Elmer_Convection_05.png)
 
 ## 6. 후처리
 
@@ -250,11 +250,11 @@ $AMBIENT = 25 ![C] External Temperature
 
 
 
-![](Pictures/CADG_06_Elmer_Convection_06_case01.png)
-![](Pictures/CADG_06_Elmer_Convection_07_case02.png)
-![](Pictures/CADG_06_Elmer_Convection_08_case03.png)
-![](Pictures/CADG_06_Elmer_Convection_09_case04.png)
-![](Pictures/CADG_06_Elmer_Convection_10_case05.png)
+![](Pictures/CADG_07_Elmer_Convection_06_case01.png)
+![](Pictures/CADG_07_Elmer_Convection_07_case02.png)
+![](Pictures/CADG_07_Elmer_Convection_08_case03.png)
+![](Pictures/CADG_07_Elmer_Convection_09_case04.png)
+![](Pictures/CADG_07_Elmer_Convection_10_case05.png)
 
 
 
@@ -264,6 +264,3 @@ $AMBIENT = 25 ![C] External Temperature
 * Standard k-epsilon model : https://www.cfd-online.com/Wiki/Standard_k-epsilon_model
 * V2-f models : https://www.cfd-online.com/Wiki/V2-f_models
 * RNG k-epsilon model : https://www.cfd-online.com/Wiki/RNG_k-epsilon_model
-
-
-
