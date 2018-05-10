@@ -1,7 +1,7 @@
 ---
 title: "엘머로 해 보는 대류열전달(Heat Convection) 해석"
 author: DymaxionKim
-date: 2018-03-26
+date: 2018-05-10
 geometry: "left=3cm,right=2cm,top=3cm,bottom=2cm"
 mainfont: Noto Sans CJK KR
 monofont: D2Coding
@@ -107,13 +107,13 @@ $$ U : 유체 속도 절대값 (Flow Velocity)  $$
 
 $$ I \equiv \frac{u'}{U} $$
 
-$$ u' : 난류영역내 속도변화량의 절대값 (Root-mean-square of the turbulent velocity fluctuations) $$
+$$ u' : 난류영역내 속도변화량의 절대값 (Root \, mean \, square \, of \, the \, turbulent \, velocity \, fluctuations) $$
 
 * k-epsilon 모델에서의 난류 소산율( KDR, $\epsilon$ )은 다음과 같은 정의에 따른다.
 
 $$ \epsilon = C_{\mu}^{\frac{3}{4}} \frac{k^{\frac{3}{2}}}{l} $$
 
-$$ C_{\mu} : 난류 모델 상수 (Turbulent Model Constant) $$
+$$ C_{\mu} : 난류 모델 상수 (Turbulent \, Model \, Constant) $$
 
 * KE clip 값은 KE(운동에너지) 및 KDR(소산율)이 항상 양수(Positive Numbers)가 되어야 하는데, 그 조건을 확실하게 만들어주기 위한 한계 설정치(Limiter)이다.
 
@@ -122,7 +122,7 @@ $$ C_{\mu} : 난류 모델 상수 (Turbulent Model Constant) $$
 $$ \mu_t = \rho C_{\mu} \frac{k^2}{\epsilon} $$
 
 
-* 전산유체해석분야는, 전문적인 전공자가 아니면 아무래도 이론을 깊이 이해하기는 어렵기 때문에, 여기서는 대략 이정도 개념만 이해해 두도록 해 보자.  사실 필자도 깊게는 잘 모른다.
+* 전산유체해석분야는, 전문적인 전공자가 아니면 아무래도 이론을 깊이 이해하기는 어렵기 때문에, 여기서는 대략 이정도 개념만 이해해 두도록 해 보자.  사실 필자도 깊게는 잘 모른다.  본 예제에서는 계산값이 잘 수렴하는지 여부에 초점을 맞추어보자.
 
 
 ### (2) case01 : 층류, 자연대류
@@ -175,11 +175,11 @@ $AMBIENT = 25 ![C] External Temperature
 
 |Boundary Condition       |Apply to boundaries   |Remark                  |
 |-------------------------|----------------------|------------------------|
-|TOP                      |Boundary 2            |유체의 외곽 상단면       |
-|BOT                      |Boundary 1            |유체의 외곽 하단면       |
-|LEFT                     |Boundary 4            |유체의 외곽 좌측면       |
-|RIGHT                    |Boundary 3            |유체의 외곽 우측면       |
-|HEATSINK                 |Boundary 5,8,9        |유체와 고체의 접촉면     |
+|TOP                      |Boundary 2            |유체의 외곽 상단면      |
+|BOT                      |Boundary 1            |유체의 외곽 하단면      |
+|LEFT                     |Boundary 4            |유체의 외곽 좌측면      |
+|RIGHT                    |Boundary 3            |유체의 외곽 우측면      |
+|HEATSINK                 |Boundary 5,8,9        |유체와 고체의 접촉면    |
 |HEATSOURCE               |Boundary 7            |발열면                  |
 
 
@@ -200,65 +200,152 @@ $AMBIENT = 25 ![C] External Temperature
 * 이상 조건들을 다 설정했으면, `Sif - Generate` 메뉴를 눌러줘서 `case01.sif` 파일을 생성하고, `File - Save project` 메뉴를 눌러서 저장하자.
 
 
-
-
 ### (3) case02 : 난류, 자연대류
-* case01에서 k-epsilon equation(KESolver)을 하나 더 추가하고, 그에 필요한 설정을 한다.
+* case01에서 난류 부분까지 다루도록 k-epsilon equation(KESolver)을 하나 더 추가하고, 그에 필요한 설정을 해 보자.
+* `Model - Setup` 메뉴에서 `Result directory = case02`, `Solver input file = case02.sif`로 수정해 준다.
+* `Constants` 카테코리에서 `Free text`에 다음과 같이 난류 관련 변수도 추가해 준다.
+
+```
+! k-epsilon model
+$BLT = 0.008 !Boundary Layer Thickness
+$KE = 0.003 !Kinetic Energy
+$KDR = 0.0001 !Kinetic Dissipation Rate
+$KEclip = 0.000006 ! KE Clip of Material
+$KEcmu = 0.09 ! KE Cmu of Material
+```
+
+* `Model - Equation`에서 `FLUID`로 들어가서, `K-Epsolon`을 `Active` 체크해 준다.  이것은 k-epsilon 모델의 난류 해석을 해 주는 해석자(Solver)이다.  만일 메뉴에서 이것이 보이지 않는다면, `File - Definitions - Append` 메뉴를 이용해서 추가해 주면 된다.  이제 `Edit Solver Settings`버튼을 눌러 팝업이 뜨면 `Linear system` 탭에서 `Convergence tol. = 1.0e-4`으로 해 준다(정밀도를 떨어뜨려 계산시간을 단축하기 위한 목적).
+
+* `Model - Material`에서 `Air(room temperature)`로 들어간 후, `K-Epsilon` 탭에서 `KE Clip = $KEclip`, `KE Cmu = $KEcmu`로 써 넣어준다.  아울러, `Navier-Stokes` 탭에서는 `Viscousity Model = K-Epsilon`으로 맞춰준다.  현재 이 모델은 비압축성, 비다공질이므로 `Compressibility, Porous Media` 부분은 `None`으로 하거나 또는 다 비워둔다.
+
+* `Model - Initial Condition`에서는 `FLUID`로 들어가서, `K-Epsilon` 탭에서 `Kinetic Energy = $KE`, `Kinetic Dissipation = $KDR`으로 써 줘서 난류 부분의 초기조건을 준다.
+
+* 이제 난류 관련 경계조건을 추가해 주자.  경계조건 `BOT`, `TOP`, `LEFT`, `RIGHT`, `HEATSINK`모두 공히, `K-Epsilon` 탭에서 `Reichardts Wall Law = On`, `Boundary Layer Thickness = $BLT` 해 준다.  라이하르트 벽면 법칙(Reichardts Wall Law)은 RANS 난류모델에서 일반적으로 적용하는 벽면 근방 부위의 모델을 말한다.  현재 적용하는 k-epsilon 난류모델은 가장 기본적인 RANS 모델의 하나이므로 이것을 적용한 것이다.
+
+* 이상의 작업을 통해, 기존 층류모델에서 k-epsilon 난류모델을 추가한 해석을 위한 조건을 설정하였다.  `sif - Generate` 메뉴로 `case02.sif` 파일 내용을 생성하고, `File - Save Project` 메뉴를 선택하여 저장하자.
+
 
 ### (4) case03 : 난류, 약한 강제대류
 * LEFT 벽면에서 유체가 유입되고 RIGHT 벽면으로 유출되는 관로유동으로 경계조건을 변경하자.
 * 다만, 유체가 공기이기 때문에 아무래도 레이놀즈수가 높게 나올 것이므로 수렴이 잘 안될 지도 모르니, 유속을 매우 느리게 설정해서(0.001[m/s]) 계산이 제대로 되는지 확인부터 해 보자.
+* `Model - Setup` 메뉴에서 `Result directory = case03`, `Solver input file = case03.sif`로 수정해 준다.
+* `Constants` 카테코리에서 `Free text`에 넣어둔 변수 중에서, 유체 속도 변수를 변경한다.  수렴에 실패할 수도 있기 때문에, 시험삼아 아주 느린 유속을 줘 보는 것이다.
+
+```
+$SPEED = 0.001 ![m/s] Flow Speed
+```
+
+* `Model - Boundary Condition - LEFT`에 들어가서, 기존의 단순 벽면이었던 경계조건을 유체가 유입되는 입구의 경계조건으로 변경하자.  `Navier-Stokes` 탭에서 `Noslip Wall BC = Off`, `Velocity 1 = $SPEED`로 준다.  난류이기 때문에 입구 부분에서도 관련 상수를 주기 위해 `K-Epsilon` 탭에서 `Kinetic Energy = $KE`, `Kinetic Dissipation = $KDR`로 조건을 주고, `Wall Law` 관련 부분은 다 지워준다.
+
+* `Model - Boundary Condition - RIGHT`에 들어가서, 기존의 단순 벽면이었던 경계조건을 유체가 유출되는 출구의 경계조건으로 변경하자.  `Navier-Stokes` 탭에서 `Noslip Wall BC = Off`, `External Pressure = 0`으로 준다.  출구 쪽에는 굳이 난류 관련 조건을 추가할 필요는 없는 것 같으므로 `K-Epsilon` 탭은 건드리지 않는다.
+
+* 이상의 작업을 통해, 기존 난류 자연대류 모델에서 입출구 유동 조건이 추가된 관로해석을 위한 조건을 설정하였다.  `sif - Generate` 메뉴로 `case03.sif` 파일 내용을 생성하고, `File - Save Project` 메뉴를 선택하여 저장하자.
 
 
-### (5) case04 : 난류, 중간 자연대류
+### (5) case04 : 난류, 중간 강제대류
 * case03의 경계조건을 그대로 두고, 유속을 10배로 올려본다. (0.01[m/s])
+* `Model - Setup` 메뉴에서 `Result directory = case04`, `Solver input file = case04.sif`로 수정해 준다.
+* `Constants` 카테코리에서 `Free text`에 넣어둔 변수 중에서, 유체 속도 변수를 변경한다.  유속을 올려도 수렴에 문제가 없는지 확인하는 것이다.
+
+```
+$SPEED = 0.01 ![m/s] Flow Speed
+```
+
+* 이상의 작업을 통해, 좀 더 유속을 올린 강제대류 조건을 설정하였다.  `sif - Generate` 메뉴로 `case04.sif` 파일 내용을 생성하고, `File - Save Project` 메뉴를 선택하여 저장하자.
 
 
-### (6) case05 : 난류, 강한 자연대류
+
+### (6) case05 : 난류, 강한 강제대류
 * 역시 같은 경계조건에서, 유속을 더 올려본다. (0.05[m/s])
 * 일정수준 이상 유속이 올라가면 계산도중 수렴에 실패하여(NaN) 결과를 얻을 수 없다.  특히 현재는 점성이 낮은 공기(Air)이므로 물(Water)일 경우보다 더욱 수렴하기가 힘들다.
 * 이 경우, `Timestep sizes`를 기존의 0.01[s]에서 0.001[s]로 더 짧은 간격으로 계산하도록 해 본다.  그렇게 하면 계산에 성공할 확률이 높아진다.  또 이렇게 할 경우, `Output intervals`를 1에서 10으로 높이면, 기존의 케이스와 동일한 시간간격의 결과데이타를 얻을 수 있게 된다.
 
+* `Model - Setup` 메뉴에서 `Result directory = case05`, `Solver input file = case05.sif`로 수정해 준다.
+* `Constants` 카테코리에서 `Free text`에 넣어둔 변수 중에서, 유체 속도 변수를 변경한다.  유속을 올려도 수렴에 문제가 없는지 확인하는 것이다.
 
-### (7) case06 : 난류, 강한 자연대류, 1분간
-* 이제 case05에서 6초간의 천이상태변화를 계산해 보았는데, 너무 시간이 짧으므로 이것을 10배로 늘려 60초간 살펴보기 위하여 `Timestep intervals`를 기존의 600에서 6000으로 늘려서 제대로 된 결과를 만들어보자.
+```
+$SPEED = 0.05 ![m/s] Flow Speed
+```
+
+* 아울러, `Timestep Intervals = 600`으로 그대로 두고, `Output Intervals = 5`로 기존의 1보다 더 올린다.  이 수치가 올라간 만큼 보정하기 위하여 `Timestep Sizes = 0.002`으로 기존의 0.01보다 1/5로 줄여준다.  이렇게 하면, 0.002초 간격으로 각 스텝별로 계산이 수행되어 더욱 조밀한 시간간격으로 해석이 되므로 수렴 성공 확률을 더 높일 수 있고, 아울러 기존과 같은 시간 간격으로 결과데이타를 얻어낼 수 있다.
+
+* 이상의 작업을 통해, 좀 더 유속을 올린 강제대류 조건을 설정하였다.  `sif - Generate` 메뉴로 `case05.sif` 파일 내용을 생성하고, `File - Save Project` 메뉴를 선택하여 저장하자.
+
+
+### (7) case06 : 난류, 강한 강제대류, 1분간
+* 이제 case05에서 6초간의 천이상태변화를 계산해 보았는데, 너무 시간이 짧으므로 이것을 10배로 늘려 60초간 살펴보기 위하여 `Timestep intervals = 6000`으로 해서 기존의 600보다 10배로 늘려서 제대로 된 결과를 만들어보자.
 * 물론 6000번의 계산이 이루어지므로, 아무리 요소망의 개수가 작은 2D 모델이라 하더라도 상당한 계산시간을 요하게 될 것이다.
+* 이상의 작업을 통해, 1분간의 강제대류 천이현상을 계산할 수 있게 된다.  `sif - Generate` 메뉴로 `case06.sif` 파일 내용을 생성하고, `File - Save Project` 메뉴를 선택하여 저장하자.
 
-
-* `Model - Setup` 메뉴에서 `Result directory = case06`, `Solver input file = case06.sif`로 바꿔 써 준다.
-
-
-
+### 해석조건 설정 완료 확인
+* 이상 `case01~06`까지 6가지의 해석 케이스를 생성하였다.
+* 자신의 컴퓨터에 복수개의 CPU 스레드 여유가 있다면, 이것들을 한꺼번에 병렬 연산을 시키면 좋을 것이다.
+* 아울러 본 해석 케이스는, 2D 모델이기 때문에 요소망의 개수가 그리 많지는 않은 편이기 때문에 메모리 사용량은 그다지 높지 않을 것이다.
+* 각 case 파일을 텍스트 에디터로 열어서 내용을 직접 다시 검토해 보고 문제가 없을지 확인한다.
 
 
 ## 5. 계산 실시
 
+* 각 case0*.sif 파일에서, 결과 데이타가 저장되는 디렉토리 명칭을 모두 각각 지정해 주었기 때문에, 이들 디렉토리를 직접 미리 만들어 준다.
+
+```bash
+$ mkdir case01
+$ mkdir case02
+$ mkdir case03
+$ mkdir case04
+$ mkdir case05
+$ mkdir case06
+```
+
 ![](Pictures/CADG_07_Elmer_Convection_05.png)
+
+* 6가지 케이스를 함께 돌리기 위해, 위 그림처럼 터미널창을 여러개 열어서 각각의 창에서 해석 실시 명령을 내려보았다.  각 창에서 다음과 같은 식으로 명령을 내리면 될 것이다.
+
+```bash
+$ ElmerSolver case01.sif
+```
+
+* 컴퓨터의 리소스 사용량을 가늠하기 위하여, 남은 창에서는 `htop` 명령을 사용하여 현재의 CPU 사용량과 메모리 사용량 등을 확인해 볼 수도 있겠다.
+
+* 계산에 걸리는 시간은, case01~05는 대략 몇시간 정도면 완료될 수 있겠지만, case06은 10~50배 더 많은 반복계산이 수행될 것이므로 훨씬 오래 걸릴 수가 있다.  저녁에 계산을 실행한 후 다음날 확인해 보면 되겠다.
+
 
 ## 6. 후처리
 
-## 7. 해석 결과 평가
+* 계산 결과는 각각의 디렉토리에 저장되어 있을 것이다.  vtu 포멧으로 저장되었기 때문에 파라뷰(paraview)를 이용하여 데이타를 읽고 가시화한다.  파라뷰의 사용방법에 관한 설명은 생략한다.
 
-## 8. 맺음말
-
-
-
-
-
-
-
-
+* case01은 자연대류에 의해 상자 안에 갖힌 난로처럼 피어오르는(?) 공기의 흐름을 확인할 수 있을 것이다.
 
 ![](Pictures/CADG_07_Elmer_Convection_06_case01.png)
+
+* case02는 난류 조건이 추가되기는 했지만 눈에 띄는 차이점이 발견되지는 않는다.  그러나 히트싱크의 온도가 달라졌음을 볼 수 있다.  즉 난류에 의해 히트싱크의 방열 효과가 좀 더 좋게 나타나는 것 같다.
+
 ![](Pictures/CADG_07_Elmer_Convection_07_case02.png)
+
+* case03은 약간의 강제 유동이 있기 때문에 유선(Flow line)의 형태가 크게 변화했음을 볼 수 있다.  아울러, 부력(Buoyancy) 조건에 의하여 가열된 유체의 유선이 우상향하는 경향을 보인다.
+
 ![](Pictures/CADG_07_Elmer_Convection_08_case03.png)
+
+* case04는 유속이 더 빨라졌기 때문에, 부력이 차지하는 힘이 상대적으로 적어지게 되므로 유선이 좀 더 수평화되는 것을 볼 수 있다.
+
 ![](Pictures/CADG_07_Elmer_Convection_09_case04.png)
+
+* case05는 더욱 유속이 빨라졌으므로, 예상대로 유선이 더욱 수평화 되었다.
+
 ![](Pictures/CADG_07_Elmer_Convection_10_case05.png)
 
+* case06을 통해 1분간의 변화를 동영상으로 확인해 볼 수도 있겠다.  본 케이스의 결과 동영상은 이곳( https://youtu.be/Upwo-KpaMjk )에서 확인할 수 있다.  결과 데이타 중에서 Temperature 및 Velocity 등을 조합하여 가시화(Visualization) 해 보니, 발열원(Heat Source)에서 공급되는 열에너지에 의하여, 히트싱크 등 고체 부분은 열전도 현상으로 온도가 순차적으로 올라가고, 유체와의 접촉면에서부터 유체 부분은 난류-층류 유동이 기동하면서 동시에 대류열전달 현상이 확인된다.  유체 부분의 온도 분포는 유선의 양상과도 잘 맞아떨어짐도 확인해 볼 수 있었다.
 
 
+## 7. 맺음말
 
-## 9. 참고자료
+* 이상 간단하게 열방정식(Heat Equation)과 유체동역학 방정식(Navier-Stokes Equation)을 조합한 다물체 다물리 대류현상을 해석해 보았다.  여기에 추가로 RANS 난류 방정식(k-epsilon Equation)도 추가하여 보았다.
+* 본 케이스와 동일한 순서로 3D 모델에서도 적용해 볼 수 있을 것이다.
+* 해석 성공 확률을 높이기 위한 가장 기본적인 방법은, 천이해석(Transient)을 실시할 경우에는 Timestep Sizes를 가급적 줄여서 짧게 끊어주고, 매시(Mesh)는 가급적 조밀하게 구성하며, 매시의 형태는 가능한 잘 정돈된 형태를 사용하는 것이다.  가능하다면  벽면(Wall) 부분의 매시는 더욱 조밀하게 해 주면 유리할 것이다.  다만 이렇게 고해상도로 높이게 되면, 메모리 사용량이 많아지고 계산량이 증가하므로 PC급의 컴퓨터에서는 자원이 부족함을 느낄 때가 있다.
+* 따라서 PC급에서는 가능한 모델의 형태와 규모를 줄이고 단순화하여 계산량을 줄여주는 쪽이 유리하다고 생각된다.  풀고자 하는 문제의 핵심을 정확히 정의하고 불필요한 부분들을 전부 생략하는 등의 경험적인 테크닉이 요구될 것이다.
+
+
+## 8. 참고자료
 * Elmer KESolver Source Code : https://github.com/ElmerCSC/elmerfem/blob/devel/fem/src/modules/KESolver.F90
 * Standard k-epsilon model : https://www.cfd-online.com/Wiki/Standard_k-epsilon_model
 * V2-f models : https://www.cfd-online.com/Wiki/V2-f_models
