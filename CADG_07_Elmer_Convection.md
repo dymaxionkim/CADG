@@ -15,10 +15,7 @@ header-includes:
  - \fancyfoot[LE,RO]{\thepage}
 output: pdf_document
 ---
-
-<script type="text/javascript" async
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
+  
 
 ## 1. 개요
 * 엘머에서 제공하는 유체동역학 해석 방법은 유한요소법(FEM)인데, 이는 다른 전문적인 CFD 소프트웨어들이 주로 채택하는 유한체적법(FVM)보다 단점이 많다고 한다.  몇 가지 한계점이 있는데, 계산효율이 좀 더 좋지 않거나, 조건에 따라 수렴에 실패할 확률이 상대적으로 높다고 한다.  때문에 대체로 가급적 레이놀즈수가 너무 높아지지 않도록 조건을 잡아줄 필요가 있다.  가급적 점성이 높거나, 유속이 느린 경우에는 적합하다.   달리말해, 아음속 또는 초음속 수준의 압축성 유체거동을 해석하거나 하는 등의 극단적인 케이스를 다루기가 꽤 곤란하다는 점이다.  이런 문제를 풀 때는 전문적인 전용 소프트웨어를 사용하는 것이 좋겠다.  오픈소스로도 OpenFOAM, SU2 등의 좋은 코드들이 있으므로 대안이 충분히 있다.
