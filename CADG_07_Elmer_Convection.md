@@ -120,7 +120,6 @@ $$ C_{\mu} : 난류 모델 상수 (Turbulent \, Model \, Constant) $$
 
 * KE Cmu 값은, 상기 소산율을 정의하기 위해 사용되는 $C_{\mu}$ 즉 난류 모델 상수를 의미한다.  이 값을 계수로 삼은 k(운동에너지) 및 epsilon(소산율)의 관계식을 통해 난류영역 내부의 점성(Viscosity, $\mu_t$ )을 정의한다.  소스코드를 살펴보면, Elmer의 KESolver에서는 0.09를 standard 모델로 취급하고 있는 것 같다. (Elmer의 소스코드를 살펴보면 0.22일 때는 v2-f 모델로, 0.0845일 때는 rng 모델로 명명하고 있다.)  여기서는 일반적인 Standard 모델의 0.09로 두자.
 
--
 
 $$ {\mu}_t = \rho CC_{\mu} {\frac{k^2}{\epsilon}} $$
 
